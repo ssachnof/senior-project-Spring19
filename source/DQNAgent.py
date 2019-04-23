@@ -33,6 +33,7 @@ class DQNAgent:
 
     '''
     update the neural network's weights based on the target network's Q values and the active network's Q values
+    note: idk if this method is actually necessary-- tbd
     '''
     def update_weights(self, target, actual):
         pass
