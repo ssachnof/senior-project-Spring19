@@ -39,9 +39,8 @@ represents a State in the environment
 board: list[list[piece]], isTerminal: boolean, playerTurn: int
 '''
 class State:
-    def __init__(self, board, isTerminal, playerTurn):
+    def __init__(self, board, playerTurn):
         self.board = board
-        self.isTerminal = isTerminal
         self.playerTurn = playerTurn
 
 
@@ -50,13 +49,30 @@ class State:
 '''
 determines if Move move is valid given a state
 '''
-def is_valid_move(state, move):
+def is_valid_move(state, piece, old_loc, new_loc):
     pass
 
 
 
 '''
-returns the reward of a given state
+alters the board based off of the state parameter passed in
+may need to pass in dq agent networks later
+
+returns the reward of making the specified move and the s'(resultant state)
+rewards are defined as follows: 
+
+win : 1
+loss : -1
+illegal move : -2
+tie : 0
+else : 0
 '''
-def get_reward(state, final_state):
+
+def make_move(state, action):
     pass
+
+
+
+
+
+
