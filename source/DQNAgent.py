@@ -10,7 +10,8 @@ from source import constants
 import random
 
 
-
+# board size is (8, 8)
+# illegal moves will just return the initial state upon attempting to take the action
 
 class DQNAgent:
     def __init__(self, memory, currentState):
