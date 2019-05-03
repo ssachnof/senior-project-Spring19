@@ -1,6 +1,11 @@
 '''
-contains the logic for making a move
+contains the logic for making a move,
+
+note that for at least the first prototype you will be ignoring the possibility of double jumps
+(ie. only take 1 jump if 2+ continuous jumps can be made). Unless you somehow make an infinite action
+space, this will be difficult to implement
 '''
+
 
 import math
 

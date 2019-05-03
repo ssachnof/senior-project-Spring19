@@ -14,11 +14,14 @@ import random
 # illegal moves will just return the initial state upon attempting to take the action
 
 class DQNAgent:
-    def __init__(self, memory, currentState):
-        self.memory = memory
+    def __init__(self, currentState):
+        self.memory = []
         self.currentState = currentState
         self.model = self.createModel(65, 24)
         self.epsilon = 1.0
+        self.current_training_episodes = 0
+        self.max_training_episodes = constants.MAX_TRAINING_EPISODES
+        self.max_agent_live_episodes = constants.MAX_AGENT_LIVE_EPISODES
 
 
 
@@ -40,12 +43,14 @@ class DQNAgent:
 
     '''
     preforms memory replay on the model 
+    target_network: DQN representing the active agent's target Q values
     '''
     def memory_replay(self, target_network):
         # create a minibatch of size 64
         memory_sample = np.random.choice(self.memory, 64)
         # get the target Q values for all actions
         for initial_state, action, reward, final_state in memory_sample:
+            # for the next line of code, you need to ensure that you are
             next_state_return_est = constants.DISCOUNT_FACTOR * max(target_network.predict(final_state)) + reward
             return_estimation = self.model.predict(initial_state)
             return_estimation[action] = next_state_return_est
@@ -67,3 +72,13 @@ class DQNAgent:
         if self.epsilon > constants.MIN_EPSILON_VALUE:
             self.epsilon *= constants.EPSILON_DECAY_RATE
         return nextAction
+
+    '''
+    adds a new memory to the agent's memory.
+    if the memory is already full, the first memory is removed
+    '''
+    def add(self, new_memory):
+        self.memory.append(new_memory)
+        if len(self.memory) > constants.MAX_MEMORY_CAPACITY:
+            self.memory.pop(0)
+
