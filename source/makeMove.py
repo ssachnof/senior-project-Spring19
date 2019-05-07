@@ -8,6 +8,7 @@ space, this will be difficult to implement
 
 
 import math
+import numpy as np
 
 
 '''
@@ -18,6 +19,11 @@ class State:
     def __init__(self, board, playerTurn):
         self.board = board
         self.playerTurn = playerTurn
+
+    # returns the representation of the current state in 1d(ie. an array of size 65) form
+    # this is needed in order to properly pass a state into the neural network
+    def flatten(self):
+        return np.hstack([self.board.reshape((64, )), np.array([self.playerTurn])])
 
 
 
@@ -82,23 +88,30 @@ def get_next_state(initial_state, action):
     # find piece_num on the board
     for row in range(len(initial_board)):
         for col in range(len(initial_board[0])):
-            if initial_board[row][col] == piece_num:
+            if initial_board[row, col] == piece_num:
                 piece_initial_location = (row, col)
-            elif initial_board[row][col] // 100 == piece_num:
+            elif initial_board[row, col] // 100 == piece_num:
                 piece_initial_location = (row, col)
                 isKing = True
+    # note that because the move mapping of actually occurs inside this, it might be better to just pass in the
+    # state, idk
     piece_final_location = get_final_piece_location(initial_board, piece_initial_location, move_num)
 
     # check all other cases for valid moves
     if not is_valid_move(initial_board, piece_initial_location, piece_final_location, isKing):
-        return {"done": True, "initial_state": initial_state, "final_state": initial_state, "reward": -2}
+        return {"done": True, "initial_state": initial_state, "action": action, "final_state": initial_state,
+                "reward": -2}
 
     # alter the state if the move that was made was valid
     done, final_state, reward = make_move(initial_state, piece_initial_location, piece_final_location)
-    return {"done" : done, "initial_state": initial_state, "final_state": final_state, "reward": reward}
+    return {"done" : done, "initial_state": initial_state, "action": action,
+            "final_state": final_state, "reward": reward}
 
     # todo: think about how to map move num 96 tonight after class!-- probably should handle this case separately
     #  in training loop
+
+
+
 
 
 

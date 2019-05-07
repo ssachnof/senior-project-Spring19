@@ -14,14 +14,15 @@ import random
 # illegal moves will just return the initial state upon attempting to take the action
 
 class DQNAgent:
-    def __init__(self, currentState):
-        self.memory = []
+    def __init__(self, currentState, player):
+        self.memory = None # this will eventually be initialized to a numpy array
         self.currentState = currentState
         self.model = self.createModel(65, 24)
         self.epsilon = 1.0
         self.current_training_episodes = 0
         self.max_training_episodes = constants.MAX_TRAINING_EPISODES
         self.max_agent_live_episodes = constants.MAX_AGENT_LIVE_EPISODES
+        self.player = player
 
 
 
@@ -30,6 +31,8 @@ class DQNAgent:
     initializes the structure of the tensorflow feed-forward nn model needed for the dqn
     hidden_layer_size: int, input_layer_size: int -> tensorflow sequential model
     '''
+
+    #todo: you need to somehow flatten the state structure into a 1D array of size 65
     def createModel(self, input_layer_size, hidden_layer_size):
         model = keras.Sequential()
         model.add(tf.keras.layers.Dense(input_layer_size, input_shape = (input_layer_size,), activation = 'relu'))
@@ -65,7 +68,7 @@ class DQNAgent:
         if random.uniform(0,1) <= self.epsilon: # take a random move
             nextAction = random.randint(0, 96)
         else:
-            nextAction = np.argmax(self.model.predict(self.currentState))
+            nextAction = np.argmax(self.model.predict(self.currentState.flatten()))
 
 
         # update the explore/exploit chance
@@ -81,4 +84,6 @@ class DQNAgent:
         self.memory.append(new_memory)
         if len(self.memory) > constants.MAX_MEMORY_CAPACITY:
             self.memory.pop(0)
+
+
 
