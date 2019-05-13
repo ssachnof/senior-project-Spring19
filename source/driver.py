@@ -9,6 +9,13 @@ import numpy as np
 contains the logic for training the agent(ie. the training loop) and allowing a human to interact with the game
 '''
 
+
+'''
+board representation: 
+index 0 is top left
+index 63 is bottom right
+'''
+
 def get_initial_state(playerTurn):
     initial_board= np.array([0, -4, 0, -3, 0, -2, 0, -1])
     initial_board = np.vstack([initial_board, np.array([-8, 0, -7, 0, -6, 0, -5, 0])])
@@ -26,16 +33,14 @@ def get_initial_state(playerTurn):
 
 
 def train_model():
+    # note: the frozen and active networks represent opposite players at ALL TIMES !!!!
+
     # initialize each agent
     active_network = {"training": DQNAgent(get_initial_state(constants.PLAYER1), constants.PLAYER1),
                       "target": DQNAgent(get_initial_state(constants.PLAYER1), constants.PLAYER1)}
     frozen_network = {"training": DQNAgent(get_initial_state(constants.PLAYER2), constants.PLAYER2),
                       "target": DQNAgent(get_initial_state(constants.PLAYER2), constants.PLAYER2)}
 
-    # fill each agent's memory up to capacity
-    # note: idk if you want to call fill memory on training and target networks separately
-    fill_memory(active_network)
-    fill_memory(frozen_network)
 
     agent_live_episodes = 0 # number of episodes a given agent has been active since last being dead/frozen
     for episode_number in range(constants.MAX_EPISODES):
@@ -58,11 +63,13 @@ def train_model():
             # note that because you are using a predefined policy here you must take that into account in your testing function
             else:
                 action = np.argmax(frozen_network["target"].model.predict(current_state.flatten()))
-
                 done, initial_state, _, final_state, reward = get_next_state(current_state, action)
                 current_state = final_state
                 reward *= -1
                 active_network["training"].add((done, initial_state, 96, final_state, reward))
+
+            # note that you will probably have to update parameters here regarding whose turn it is here/
+            # make sure you are exact about that -- could significantly mess up the training
 
         active_network["training"].current_training_episodes += 1
         agent_live_episodes += 1
@@ -72,6 +79,11 @@ def train_model():
         # note: you probably shouldn't need to reset the target network's current state
         # that will depend on the 1 episode training logic
         active_network["training"].currentState = get_initial_state(active_network["training"].player)
+
+        # fit the model using memory replay-- you might want to just do nothing until you have at least 64 samples
+        # could just use an if statement here(would open the potential for over-fitting)
+        if not len(active_network["training"].memory) < 64:
+            active_network["training"].memory_replay(frozen_network["target"])
 
         # swap target and training network case
         if active_network["training"].current_training_episodes > \
@@ -91,12 +103,6 @@ def train_model():
 
 
 
-'''
-fills the initial memory of the agent up to capacity
-not entirely sure yet if should handle the target and training networks together or separately
-'''
-def fill_memory(dqn):
-    pass
 
 
 def play_checkers():
