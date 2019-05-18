@@ -157,7 +157,7 @@ def get_next_state(initial_state, action):
     #     print(initial_state.board)
     #     print(action)
     #     exit()
-        return True, initial_state, action, initial_state, -2
+    #     return True, initial_state, action, initial_state, -2
     # note that because the move mapping of actually occurs inside this, it might be better to just pass in the
     # state, idk
     piece_final_location = get_final_piece_location(initial_state, piece_initial_location, move_num)
