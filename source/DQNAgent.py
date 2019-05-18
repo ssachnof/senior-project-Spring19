@@ -66,9 +66,11 @@ class DQNAgent:
     '''
     def get_next_action(self):
         if random.uniform(0,1) <= self.epsilon: # take a random move
-            nextAction = random.randint(0, 96)
+            nextAction = random.randint(0, 95)
+            print("random move: ", nextAction)
         else:
             print(self.currentState.flatten().shape)
+            print(self.currentState.flatten())
             nextAction = np.argmax(self.model.predict(self.currentState.flatten()))
 
 

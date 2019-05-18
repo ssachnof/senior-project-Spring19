@@ -41,25 +41,31 @@ a move is valid
 
 # todo: add case to ensure that the desired space is vacant
 def is_valid_move(initial_state, initial_piece_location, final_piece_location, isKing):
+    print("blaklhklfah")
     # piece dne case
     if initial_piece_location is None:
+        print("null initial location")
         return False
 
     #check OOB cases
     if (final_piece_location[0] not in list(range(8))) or (final_piece_location[1] not in list(range(8))):
+        print("invalid range")
         return False
 
     # ensure the destination square is unoccupied
     elif initial_state.board[final_piece_location[0], final_piece_location[1]] != 0:
+        print("piece loc is unoccupied")
         return False
 
     # non-king backwards move case
     elif is_backwards_move(initial_state, initial_piece_location, final_piece_location) and not isKing:
+        print("backwards move!!!!!")
         return False
 
     # jump cases: jump onto a piece or jump without jumping over a piece
     elif is_jump(initial_piece_location, final_piece_location) \
             and not is_valid_jump(initial_state, initial_piece_location, final_piece_location, isKing):
+        print("occupied jump move")
         return False
 
     return True
@@ -142,6 +148,8 @@ def get_next_state(initial_state, action):
     move_num = action % 8
     piece_num = (action // 8) + 1
     piece_num *= initial_state.playerTurn
+    print(piece_num)
+    print(move_num)
     # find piece_num on the board
     for row in range(len(initial_board)):
         for col in range(len(initial_board[0])):
@@ -150,14 +158,6 @@ def get_next_state(initial_state, action):
             elif initial_board[row, col] // 100 == piece_num:
                 piece_initial_location = (row, col)
                 isKing = True
-    # if piece_initial_location is None:
-    #     print("running!!!!")
-    #     print(piece_initial_location)
-    #     print(piece_num)
-    #     print(initial_state.board)
-    #     print(action)
-    #     exit()
-    #     return True, initial_state, action, initial_state, -2
     # note that because the move mapping of actually occurs inside this, it might be better to just pass in the
     # state, idk
     piece_final_location = get_final_piece_location(initial_state, piece_initial_location, move_num)
@@ -165,9 +165,10 @@ def get_next_state(initial_state, action):
     # check all other cases for valid moves
     if not is_valid_move(initial_state, piece_initial_location, piece_final_location, isKing):
         return True, initial_state, action, initial_state, -2
-
+    print("valid move found")
     # alter the state if the move that was made was valid
     done, final_state, reward = make_move(initial_state, piece_initial_location, piece_final_location)
+    print(final_state.board)
     return done, initial_state, action, final_state, reward
 
 
@@ -250,17 +251,22 @@ def get_reward(final_state):
     if next_player_pieces == []: # somebody won the game
         return True, 1
 
+    print("getReward valid move check turn: ", final_state.playerTurn)
     # see if there exists a valid move for at least 1 piece of the next player-- check for tie condition
+    print(final_state.board)
     for piece_loc in next_player_pieces:
         piece_val = final_state.board[piece_loc[0], piece_loc[1]]
         isKing = False
+        print("initial loc: ", piece_loc)
+        print("final loc: ", get_final_piece_location(final_state, piece_loc, 2))
+        print("piece val: ", piece_val)
         if abs(piece_val) >= 100:
             isKing = True
-            for move_num in range(8):
-                if is_valid_move(final_state, piece_loc,
-                                 get_final_piece_location(final_state, piece_loc, move_num), isKing):
-                    # the game is not terminal/ not a tie
-                    return False, 0
+        for move_num in range(8):
+            if is_valid_move(final_state, piece_loc,
+                             get_final_piece_location(final_state, piece_loc, move_num), isKing):
+                # the game is not terminal/ not a tie
+                return False, 0
     # the game resulted in a tie
     return True, 0
 
