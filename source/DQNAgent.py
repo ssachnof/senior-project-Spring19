@@ -5,8 +5,8 @@ contains the artictecture for the DQN Agent, including the neural network model
 import tensorflow as tf
 import numpy as np
 import tensorflow.keras as keras
-from source import makeMove
-from source import constants
+import makeMove
+import constants
 import random
 
 
@@ -38,7 +38,7 @@ class DQNAgent:
         model.add(tf.keras.layers.Dense(input_layer_size, input_shape = (input_layer_size,), activation = 'relu'))
         model.add(tf.layers.Dense(hidden_layer_size, activation = 'relu'))
         model.add(tf.layers.Dense(hidden_layer_size, activation = 'relu'))
-        model.add(tf.layers.Dense(97, activation = 'linear'))
+        model.add(tf.layers.Dense(96, activation = 'linear'))
         opt = tf.train.AdamOptimizer(learning_rate=constants.LEARNING_RATE)
         model.compile(loss='mse', optimizer=opt, metrics=['accuracy'])
         return model
@@ -68,6 +68,7 @@ class DQNAgent:
         if random.uniform(0,1) <= self.epsilon: # take a random move
             nextAction = random.randint(0, 96)
         else:
+            print(self.currentState.flatten().shape)
             nextAction = np.argmax(self.model.predict(self.currentState.flatten()))
 
 
@@ -81,9 +82,12 @@ class DQNAgent:
     if the memory is already full, the first memory is removed
     '''
     def add(self, new_memory):
-        self.memory.append(new_memory)
-        if len(self.memory) > constants.MAX_MEMORY_CAPACITY:
-            self.memory.pop(0)
+        if self.memory is None:
+            self.memory = np.array([new_memory])
+        else:
+            self.memory = np.vstack([self.memory, new_memory])
+            if len(self.memory) > constants.MAX_MEMORY_CAPACITY:
+                self.memory = self.memory[1:, :]
 
 
 

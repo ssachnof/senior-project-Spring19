@@ -20,7 +20,7 @@ def get_initial_state(playerTurn):
     initial_board= np.array([0, -4, 0, -3, 0, -2, 0, -1])
     initial_board = np.vstack([initial_board, np.array([-8, 0, -7, 0, -6, 0, -5, 0])])
     initial_board = np.vstack([initial_board, np.array([0, -12, 0, -11, 0, -10, 0, -9])])
-    for i in range(6):
+    for i in range(2):
         initial_board = np.vstack([initial_board, np.zeros(shape=(8,), dtype=int)])
     initial_board = np.vstack([initial_board, np.array([9, 0, 10, 0, 11, 0, 12, 0])])
     initial_board = np.vstack([initial_board, np.array([0, 5, 0, 6, 0, 7, 0, 8])])
@@ -30,6 +30,7 @@ def get_initial_state(playerTurn):
         return State(initial_board, constants.PLAYER1)
     else:
         return State(initial_board, constants.PLAYER2)
+
 
 
 def train_model():
@@ -102,11 +103,16 @@ def train_model():
 
 
 
-
+def swap_networks(network1, network2):
+    temp = network1
+    network1 = network2
+    network2 = temp
 
 
 def play_checkers():
     pass
 
 def main():
-    pass
+    train_model()
+
+main()

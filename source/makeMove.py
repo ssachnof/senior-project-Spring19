@@ -24,6 +24,11 @@ class State:
     # returns the representation of the current state in 1d(ie. an array of size 65) form
     # this is needed in order to properly pass a state into the neural network
     def flatten(self):
+        # print(self.board)
+        # print(self.board.shape)
+        # print(np.hstack([self.board.reshape((64, )), np.array([self.playerTurn])]))
+        # print(np.hstack([self.board.reshape((64, )), np.array([self.playerTurn])]).shape)
+        # exit()
         return np.hstack([self.board.reshape((64, )), np.array([self.playerTurn])])
 
 
@@ -129,7 +134,7 @@ else : 0
 
 def get_next_state(initial_state, action):
 
-    initial_board, final_board = initial_state.board
+    initial_board = initial_state.board
     isKing = False
     piece_initial_location = None
 
@@ -145,6 +150,14 @@ def get_next_state(initial_state, action):
             elif initial_board[row, col] // 100 == piece_num:
                 piece_initial_location = (row, col)
                 isKing = True
+    # if piece_initial_location is None:
+    #     print("running!!!!")
+    #     print(piece_initial_location)
+    #     print(piece_num)
+    #     print(initial_state.board)
+    #     print(action)
+    #     exit()
+        return True, initial_state, action, initial_state, -2
     # note that because the move mapping of actually occurs inside this, it might be better to just pass in the
     # state, idk
     piece_final_location = get_final_piece_location(initial_state, piece_initial_location, move_num)
@@ -192,9 +205,12 @@ def get_final_piece_location(initial_state, piece_initial_location, move_num):
     # negate if player 2
     if player_turn == constants.PLAYER2:
         initial_loc_change *= -1
-
+    # print("initial_loc: ", piece_initial_location)
+    # print("change: ", initial_loc_change)
+    # print("result: ", (piece_initial_location[row] + initial_loc_change[row],
+    #        piece_initial_location[col] + initial_loc_change[col]))
     return (piece_initial_location[row] + initial_loc_change[row],
-            piece_initial_location[1] + initial_loc_change[col])
+            piece_initial_location[col] + initial_loc_change[col])
 
 
 '''
@@ -206,6 +222,8 @@ assumes the given final location is valid
 def make_move(initial_state, piece_initial_location, piece_final_location):
     final_board = initial_state.board.copy()
     if is_jump(piece_initial_location, piece_final_location):
+        print("this has run!!!!!!!")
+        exit()
         ...
 
     # swap the piece initial location and piece final location
@@ -236,7 +254,7 @@ def get_reward(final_state):
     for piece_loc in next_player_pieces:
         piece_val = final_state.board[piece_loc[0], piece_loc[1]]
         isKing = False
-        if abs(piece_loc) >= 100:
+        if abs(piece_val) >= 100:
             isKing = True
             for move_num in range(8):
                 if is_valid_move(final_state, piece_loc,
