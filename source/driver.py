@@ -45,33 +45,64 @@ def train_model():
 
     agent_live_episodes = 0 # number of episodes a given agent has been active since last being dead/frozen
     for episode_number in range(constants.MAX_EPISODES):
+        print("EPISODE_NUMBER: ", episode_number)
 
         ######### episode iteration here #######
         done = False
+        current_state = active_network["training"].currentState
         while not done:
+            opp_cheated = False
             current_state = active_network["training"].currentState
+            # print()
+            # print("turn: ", current_state.playerTurn)
 
 
             # A[k] case(epsilon greedy) -- player not waiting for opponent
             if current_state.playerTurn == active_network["training"].player:
                 action = active_network["training"].get_next_action()
                 done, initial_state, action, final_state, reward = get_next_state(current_state, action)
+                # this next line might be problematic
                 active_network["training"].add((done, initial_state, action, final_state, reward))
-                current_state = final_state #note that get_next_state must change the player's turn it is
+                current_state = final_state
+                active_network["training"].currentState = current_state #note that get_next_state must change the player's turn it is
+                # active_network["training"].currentState = current_state
+                # print("next turn: ", current_state.playerTurn)
+                # print("done: ", done)
+                # print("reward: ", reward)
 
             # waiting for opponent to make move-- must take A[97] and predict the opponent's best action
             # this is to maintain the staticness of the environment
             # note that because you are using a predefined policy here you must take that into account in your testing function
             else:
+                # print("getting opp's move")
+                # print(current_state.flatten().shape)
+                # print(type(current_state.flatten()))
                 action = np.argmax(frozen_network["target"].model.predict(current_state.flatten()))
                 done, initial_state, _, final_state, reward = get_next_state(current_state, action)
                 current_state = final_state
+                active_network["training"].currentState = current_state
                 reward *= -1
+                # if the reward is 2, it might incentivise the agent to search in the wrong direction while training
+                if reward == 2:
+                    reward = 0
+                    opp_cheated = True
                 active_network["training"].add((done, initial_state, 96, final_state, reward))
+            if done and reward == 0 and not opp_cheated:
+                print("tie game")
+                print(current_state.board)
+                exit()
+            if not done:
+                print("turn: ", current_state.playerTurn)
+                print("struct current turn: ", active_network["training"].currentState.playerTurn)
+            assert(reward != 2)
+                # if not done:
+                #     print(current_state.playerTurn)
+                #     exit()
 
             # note that you will probably have to update parameters here regarding whose turn it is here/
             # make sure you are exact about that -- could significantly mess up the training
-
+        done = False
+        # print("END OF EPISODE!!!!!")
         active_network["training"].current_training_episodes += 1
         agent_live_episodes += 1
 
@@ -89,6 +120,7 @@ def train_model():
         # swap target and training network case
         if active_network["training"].current_training_episodes > \
             active_network["training"].max_training_episodes:
+            exit("swapping target and training")
 
             # swap target and training networks and possibly update some of the agent's fields(tbd)
             active_network["training"].current_training_episodes = 0
@@ -100,6 +132,7 @@ def train_model():
             swap_networks(active_network["training"], frozen_network["training"])
             swap_networks(active_network["target"], frozen_network["target"])
             agent_live_episodes = 0
+            exit("swapping live agents")
 
 
 
