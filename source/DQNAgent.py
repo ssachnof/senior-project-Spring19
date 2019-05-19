@@ -38,7 +38,7 @@ class DQNAgent:
         model.add(tf.keras.layers.Dense(input_layer_size, input_shape = (input_layer_size,), activation = 'relu'))
         model.add(tf.layers.Dense(hidden_layer_size, activation = 'relu'))
         model.add(tf.layers.Dense(hidden_layer_size, activation = 'relu'))
-        model.add(tf.layers.Dense(96, activation = 'linear'))
+        model.add(tf.layers.Dense(97, activation = 'linear'))
         opt = tf.train.AdamOptimizer(learning_rate=constants.LEARNING_RATE)
         model.compile(loss='mse', optimizer=opt, metrics=['accuracy'])
         return model
@@ -50,14 +50,18 @@ class DQNAgent:
     '''
     def memory_replay(self, target_network):
         # create a minibatch of size 64
-        memory_sample = np.random.choice(self.memory, 64)
+        # print(self.memory)
+        indices = np.random.choice(self.memory.shape[0], 64, replace=False)
+        memory_sample = self.memory[indices]
         # get the target Q values for all actions
-        for initial_state, action, reward, final_state in memory_sample:
+        for _,initial_state, action, final_state, reward in memory_sample:
             # for the next line of code, you need to ensure that you are
-            next_state_return_est = constants.DISCOUNT_FACTOR * max(target_network.predict(final_state)) + reward
-            return_estimation = self.model.predict(initial_state)
-            return_estimation[action] = next_state_return_est
-            self.model.fit(initial_state, return_estimation)
+            next_state_return_est = constants.DISCOUNT_FACTOR * max(target_network.model.predict(final_state.flatten())[0]) + reward
+            return_estimation = self.model.predict(initial_state.flatten())
+            return_estimation[0][action] = next_state_return_est
+            self.model.fit(initial_state.flatten(), return_estimation, verbose=0)
+        print("Memory replay completed!!!!!!!")
+            # print("fitted!!!!!!!!")
 
 
     '''
@@ -67,16 +71,17 @@ class DQNAgent:
     def get_next_action(self):
         if random.uniform(0,1) <= self.epsilon: # take a random move
             nextAction = random.randint(0, 95)
-            print("random move: ", nextAction)
+            # print("random move: ", nextAction)
         else:
-            print(self.currentState.flatten().shape)
-            print(self.currentState.flatten())
+            # print(self.currentState.flatten().shape)
+            # print(self.currentState.flatten())
             nextAction = np.argmax(self.model.predict(self.currentState.flatten()))
 
 
         # update the explore/exploit chance
         if self.epsilon > constants.MIN_EPSILON_VALUE:
             self.epsilon *= constants.EPSILON_DECAY_RATE
+        print("EPSILON: ", self.epsilon)
         return nextAction
 
     '''
