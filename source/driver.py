@@ -4,6 +4,9 @@ from source import constants
 from source.makeMove import State
 from source.makeMove import get_next_state
 import numpy as np
+import copy
+import tensorflow
+from tensorflow.keras import models
 
 '''
 contains the logic for training the agent(ie. the training loop) and allowing a human to interact with the game
@@ -50,54 +53,40 @@ def train_model():
         ######### episode iteration here #######
         done = False
         current_state = active_network["training"].currentState
+        consecutive_moves = 0
         while not done:
-            opp_cheated = False
+            consecutive_moves += 1
             current_state = active_network["training"].currentState
             # print()
             # print("turn: ", current_state.playerTurn)
-
-
-            # A[k] case(epsilon greedy) -- player not waiting for opponent
-            if current_state.playerTurn == active_network["training"].player:
-                action = active_network["training"].get_next_action()
-                done, initial_state, action, final_state, reward = get_next_state(current_state, action)
-                # this next line might be problematic
-                active_network["training"].add((done, initial_state, action, final_state, reward))
-                current_state = final_state
-                active_network["training"].currentState = current_state #note that get_next_state must change the player's turn it is
-                # active_network["training"].currentState = current_state
-                # print("next turn: ", current_state.playerTurn)
-                # print("done: ", done)
-                # print("reward: ", reward)
-
-            # waiting for opponent to make move-- must take A[97] and predict the opponent's best action
-            # this is to maintain the staticness of the environment
-            # note that because you are using a predefined policy here you must take that into account in your testing function
+            action = active_network["training"].get_next_action()
+            done, initial_state, action, intermediate_state, reward = get_next_state(current_state, action)
+            #need to immitate that opp saw something and couldn't make a move-- just have to swap the player's turn it is
+            if done:
+                intermediate_state.playerTurn *= -1
+                active_network["training"].add((done, initial_state, action, intermediate_state, reward))
+                break
             else:
-                # print("getting opp's move")
-                # print(current_state.flatten().shape)
-                # print(type(current_state.flatten()))
-                action = np.argmax(frozen_network["target"].model.predict(current_state.flatten()))
-                done, initial_state, _, final_state, reward = get_next_state(current_state, action)
-                current_state = final_state
-                active_network["training"].currentState = current_state
+                consecutive_moves+=1
+                opp_action = np.argmax(frozen_network["target"].model.predict(intermediate_state.flatten()))
+                done, _, _, final_state, reward = get_next_state(intermediate_state, opp_action)
+                # this not needed because eventually, the opponent will learn to only make valid moves
+                # however, not including it may slow down training, but unsure if including it
+                # will mess up the training process
+
+                # may need to stop cheating, seems to be causing a plateau
+                # if reward == -2:
+                #     reward = 0
                 reward *= -1
-                # if the reward is 2, it might incentivise the agent to search in the wrong direction while training
-                if reward == 2:
-                    reward = 0
-                    opp_cheated = True
-                active_network["training"].add((done, initial_state, 96, final_state, reward))
-            if done and reward == 0 and not opp_cheated:
-                print("tie game")
-                print(current_state.board)
-                exit()
-            if not done:
-                print("turn: ", current_state.playerTurn)
-                print("struct current turn: ", active_network["training"].currentState.playerTurn)
-            assert(reward != 2)
-                # if not done:
-                #     print(current_state.playerTurn)
-                #     exit()
+                active_network["training"].currentState = final_state
+                active_network["training"].add((done, initial_state, action, final_state, reward))
+            # if done and reward == 0:
+            #     print("tie game")
+            #     print(current_state.board)
+            #     exit()
+            # if not done:
+            #     print("turn: ", current_state.playerTurn)
+            #     print("struct current turn: ", active_network["training"].currentState.playerTurn)
 
             # note that you will probably have to update parameters here regarding whose turn it is here/
             # make sure you are exact about that -- could significantly mess up the training
@@ -105,6 +94,8 @@ def train_model():
         # print("END OF EPISODE!!!!!")
         active_network["training"].current_training_episodes += 1
         agent_live_episodes += 1
+        print()
+        print("CONSECUTIVE MOVES: ", consecutive_moves)
 
 
         # reset the current state
@@ -120,26 +111,63 @@ def train_model():
         # swap target and training network case
         if active_network["training"].current_training_episodes > \
             active_network["training"].max_training_episodes:
-            exit("swapping target and training")
+            print("\n\n\n#########SWAPPING TARGET AND TRAINING############\n\n\n")
+            # exit("swapping target and training")
 
             # swap target and training networks and possibly update some of the agent's fields(tbd)
             active_network["training"].current_training_episodes = 0
-            swap_networks(active_network["training"], active_network["target"])
+            # print("target epsilon: ", active_network["target"].epsilon)
+            active, frozen = swap_networks(active_network["training"], active_network["target"])
+            active_network["training"] = active
+            active_network["target"] = frozen
+            # print("training epsilon: ", active_network["training"].epsilon)
+            # print("target epsilon: ", active_network["target"].epsilon)
 
         # swap active and frozen network case
         if agent_live_episodes > active_network["training"].max_agent_live_episodes:
             # swap acitve and frozen networks and possibly update the max agent live episodes field
-            swap_networks(active_network["training"], frozen_network["training"])
-            swap_networks(active_network["target"], frozen_network["target"])
+            active, frozen = swap_networks(active_network["training"], frozen_network["training"])
+            active_network["training"] = active
+            frozen_network["training"] = frozen
+            active, frozen = swap_networks(active_network["target"], frozen_network["target"])
+            active_network["target"] = active
+            frozen_network["target"] = frozen
+            print(active_network["target"].epsilon)
+            print(active_network["training"].epsilon)
+            print(frozen_network["target"].epsilon)
+            print(frozen_network["training"].epsilon)
             agent_live_episodes = 0
-            exit("swapping live agents")
-
+            print("!!!!!!!!!!!!!!!!!!!SWAPPING LIVE AGENTS!!!!!!!!!!!!!!!!!!")
 
 
 def swap_networks(network1, network2):
-    temp = network1
-    network1 = network2
-    network2 = temp
+    network1.model.save("temp1_weights.h5")
+    temp1 = DQNAgent(network1.currentState, network1.player)
+    temp1.memory = copy.deepcopy(network1.memory)
+    temp1.currentState = copy.deepcopy(network1.currentState)
+    temp1.model = models.load_model("temp1_weights.h5")
+    temp1.epsilon = network1.epsilon
+    temp1.current_training_episodes = network1.current_training_episodes
+    temp1.max_training_episodes = network1.max_training_episodes
+    temp1.max_agent_live_episodes = network1.max_agent_live_episodes
+    temp1.player = network1.player
+
+    network2.model.save("temp2_weights.h5")
+    temp2 = DQNAgent(network2.currentState, network2.player)
+    temp2.memory = copy.deepcopy(network2.memory)
+    temp2.currentState = copy.deepcopy(network2.currentState)
+    temp2.model = models.load_model("temp2_weights.h5")
+    temp2.epsilon = network2.epsilon
+    temp2.current_training_episodes = network2.current_training_episodes
+    temp2.max_training_episodes = network2.max_training_episodes
+    temp2.max_agent_live_episodes = network2.max_agent_live_episodes
+    temp2.player = network2.player
+
+    # network1 = temp2
+    # network2 = temp1
+    print(network1.epsilon)
+    print(network2.epsilon)
+    return temp2, temp1
 
 
 def play_checkers():

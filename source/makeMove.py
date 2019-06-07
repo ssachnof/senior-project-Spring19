@@ -24,11 +24,6 @@ class State:
     # returns the representation of the current state in 1d(ie. an array of size 65) form
     # this is needed in order to properly pass a state into the neural network
     def flatten(self):
-        # print(self.board)
-        # print(self.board.shape)
-        # print(np.hstack([self.board.reshape((64, )), np.array([self.playerTurn])]))
-        # print(np.hstack([self.board.reshape((64, )), np.array([self.playerTurn])]).shape)
-        # exit()
         return np.array([np.hstack([self.board.reshape((64, )), np.array([self.playerTurn])])])
 
 
@@ -235,17 +230,21 @@ assumes the given final location is valid
 
 def make_move(initial_state, piece_initial_location, piece_final_location):
     final_board = initial_state.board.copy()
+    # you need to remove the piece that was jumped over
     if is_jump(piece_initial_location, piece_final_location):
-        print("this has run!!!!!!!")
-        exit()
-        ...
+        loc_change = np.array([piece_final_location[0] - piece_initial_location[0],
+                      piece_final_location[1] - piece_initial_location[1]])
+        loc_change = loc_change // 2
+        loc_to_remove = (piece_initial_location[0] + loc_change[0], piece_initial_location[1] + loc_change[1])
+        assert(0 != initial_state.board[loc_to_remove[0], loc_to_remove[1]])
+        initial_state.board[loc_to_remove[0], loc_to_remove[1]] = 0
 
     # swap the piece initial location and piece final location
     temp = final_board[piece_initial_location[0], piece_initial_location[1]]
     final_board[piece_initial_location[0], piece_initial_location[1]] = 0
     final_board[piece_final_location[0], piece_final_location[1]] = temp
-
     final_state = State(final_board, initial_state.playerTurn * -1)
+    createKing(final_state, piece_final_location, initial_state.playerTurn)
     done, reward = get_reward(final_state)
 
     return done, final_state, reward
@@ -277,4 +276,16 @@ def get_reward(final_state):
                 return False, 0
     # the game resulted in a tie
     return True, 0
+
+
+def createKing(final_state, pieceLoc, playerNum):
+    row = 0
+    pieceVal = final_state.board[pieceLoc[row], pieceLoc[1]]
+    assert(final_state.board[pieceLoc[0], pieceLoc[1]] != 0)
+    if abs(pieceVal) // 100 == 0:
+        if row == 0 and playerNum == constants.PLAYER1:
+            final_state.board[pieceLoc[row], pieceLoc[1]] *= 100
+        elif row == 7 and playerNum == constants.PLAYER2:
+            final_state.board[pieceLoc[row], pieceLoc[1]] *= 100
+
 

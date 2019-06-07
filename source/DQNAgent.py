@@ -17,7 +17,7 @@ class DQNAgent:
     def __init__(self, currentState, player):
         self.memory = None # this will eventually be initialized to a numpy array
         self.currentState = currentState
-        self.model = self.createModel(65, 24)
+        self.model = self.createModel(65, 48)
         self.epsilon = 1.0
         self.current_training_episodes = 0
         self.max_training_episodes = constants.MAX_TRAINING_EPISODES
@@ -36,10 +36,11 @@ class DQNAgent:
     def createModel(self, input_layer_size, hidden_layer_size):
         model = keras.Sequential()
         model.add(tf.keras.layers.Dense(input_layer_size, input_shape = (input_layer_size,), activation = 'relu'))
-        model.add(tf.layers.Dense(hidden_layer_size, activation = 'relu'))
-        model.add(tf.layers.Dense(hidden_layer_size, activation = 'relu'))
-        model.add(tf.layers.Dense(97, activation = 'linear'))
-        opt = tf.train.AdamOptimizer(learning_rate=constants.LEARNING_RATE)
+        model.add(tf.keras.layers.Dropout(.2))
+        #model.add(tf.layers.Dense(hidden_layer_size, activation = 'relu'))
+        model.add(tf.layers.Dense(96, activation = 'linear'))
+        opt = keras.optimizers.Adam()
+        #opt = tf.train.AdamOptimizer(learning_rate=constants.LEARNING_RATE)
         model.compile(loss='mse', optimizer=opt, metrics=['accuracy'])
         return model
 
@@ -51,15 +52,20 @@ class DQNAgent:
     def memory_replay(self, target_network):
         # create a minibatch of size 64
         # print(self.memory)
-        indices = np.random.choice(self.memory.shape[0], 64, replace=False)
+        indices = np.random.choice(self.memory.shape[0], constants.MEMORY_SAMPLE_SIZE, replace=False)
         memory_sample = self.memory[indices]
         # get the target Q values for all actions
-        for _,initial_state, action, final_state, reward in memory_sample:
+        for done,initial_state, action, final_state, reward in memory_sample:
             # for the next line of code, you need to ensure that you are
             next_state_return_est = constants.DISCOUNT_FACTOR * max(target_network.model.predict(final_state.flatten())[0]) + reward
+            if done:
+                next_state_return_est = reward
             return_estimation = self.model.predict(initial_state.flatten())
             return_estimation[0][action] = next_state_return_est
             self.model.fit(initial_state.flatten(), return_estimation, verbose=0)
+        # if self.epsilon > constants.MIN_EPSILON_VALUE:
+        #     self.epsilon *= constants.EPSILON_DECAY_RATE
+        print("EPSILON: ", self.epsilon)
         print("Memory replay completed!!!!!!!")
             # print("fitted!!!!!!!!")
 
@@ -79,9 +85,9 @@ class DQNAgent:
 
 
         # update the explore/exploit chance
+        # todo: this needs to only be updated after a episode has finished
         if self.epsilon > constants.MIN_EPSILON_VALUE:
             self.epsilon *= constants.EPSILON_DECAY_RATE
-        print("EPSILON: ", self.epsilon)
         return nextAction
 
     '''
