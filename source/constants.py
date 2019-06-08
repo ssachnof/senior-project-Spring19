@@ -14,7 +14,7 @@ LEARNING_RATE = .001
 
 
 # EPSILON_DECAY_RATE = .9999
-EPSILON_DECAY_RATE = .999
+EPSILON_DECAY_RATE = .9995
 MIN_EPSILON_VALUE = .01
 
 
@@ -26,7 +26,7 @@ MAX_TRAINING_EPISODES = 256 # this hyperparam will probably have to be changed l
 
 MAX_AGENT_LIVE_EPISODES = 1024
 
-MAX_MEMORY_CAPACITY = 512 # this hyperparameter will probably have to be changed later
+MAX_MEMORY_CAPACITY = 1024 # this hyperparameter will probably have to be changed later
 
 MAX_EPISODES = 10000000
 
@@ -44,4 +44,4 @@ FORWARD_JUMP_LEFT = 6
 FORWARD_JUMP_RIGHT = 7
 
 
-MEMORY_SAMPLE_SIZE = 64
+MEMORY_SAMPLE_SIZE = 512

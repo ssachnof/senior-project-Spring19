@@ -52,8 +52,11 @@ class DQNAgent:
     def memory_replay(self, target_network):
         # create a minibatch of size 64
         # print(self.memory)
-        indices = np.random.choice(self.memory.shape[0], constants.MEMORY_SAMPLE_SIZE, replace=False)
+        sample_size = int(.1 * len(self.memory))
+        indices = np.random.choice(self.memory.shape[0], sample_size, replace=False)
         memory_sample = self.memory[indices]
+        targets = []
+        features = []
         # get the target Q values for all actions
         for done,initial_state, action, final_state, reward in memory_sample:
             # for the next line of code, you need to ensure that you are
@@ -62,7 +65,11 @@ class DQNAgent:
                 next_state_return_est = reward
             return_estimation = self.model.predict(initial_state.flatten())
             return_estimation[0][action] = next_state_return_est
-            self.model.fit(initial_state.flatten(), return_estimation, verbose=0)
+            targets.append(return_estimation[0])
+            features.append(initial_state.flatten()[0])
+        targets = np.array(targets)
+        features = np.array(features)
+        self.model.fit(features, targets, verbose=1, validation_split=1)
         # if self.epsilon > constants.MIN_EPSILON_VALUE:
         #     self.epsilon *= constants.EPSILON_DECAY_RATE
         print("EPSILON: ", self.epsilon)
@@ -74,7 +81,7 @@ class DQNAgent:
     use an epsilon greedy policy to get the next move
     returns the number of the next action
     '''
-    def get_next_action(self):
+    def get_next_action(self, max_memory_size):
         if random.uniform(0,1) <= self.epsilon: # take a random move
             nextAction = random.randint(0, 95)
             # print("random move: ", nextAction)
@@ -86,7 +93,10 @@ class DQNAgent:
 
         # update the explore/exploit chance
         # todo: this needs to only be updated after a episode has finished
-        if self.epsilon > constants.MIN_EPSILON_VALUE:
+        if self.memory is not None:
+            print(len(self.memory))
+        if self.epsilon > constants.MIN_EPSILON_VALUE and self.memory is not None and \
+                len(self.memory) == max_memory_size:
             self.epsilon *= constants.EPSILON_DECAY_RATE
         return nextAction
 
@@ -94,12 +104,12 @@ class DQNAgent:
     adds a new memory to the agent's memory.
     if the memory is already full, the first memory is removed
     '''
-    def add(self, new_memory):
+    def add(self, new_memory, max_memory_capacity):
         if self.memory is None:
             self.memory = np.array([new_memory])
         else:
             self.memory = np.vstack([self.memory, new_memory])
-            if len(self.memory) > constants.MAX_MEMORY_CAPACITY:
+            if len(self.memory) > max_memory_capacity:
                 self.memory = self.memory[1:, :]
 
 
