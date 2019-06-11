@@ -230,10 +230,11 @@ def main():
         #todo: I wonder if the way you are removing stuff from an array is inefficient
         for trainingExp in range(7, maxTrainingExp):
             training_range = 2 ** trainingExp
-            for mem_cap_exp in range(9, 11):
-                for epsilon_decay in range(1,10, 2):
+            for mem_cap_exp in range(10, 11):
+                for epsilon_decay in range(3,10, 2):
                     max_memory_capacity = 2 ** mem_cap_exp
-                    epsilon_decay_rate = .90 + (epsilon_decay / 100)
+                    print(max_memory_capacity)
+                    epsilon_decay_rate = .9 + (epsilon_decay / 100)
                     train_model(live_range, training_range, max_memory_capacity, epsilon_decay_rate)
 
 main()

@@ -8,6 +8,7 @@ import tensorflow.keras as keras
 import makeMove
 import constants
 import random
+import collections
 
 
 # board size is (8, 8)
