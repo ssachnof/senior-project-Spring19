@@ -66,7 +66,7 @@ class DQNAgent:
             return_estimation = self.model.predict(initial_state.flatten())
             return_estimation[0][action] = next_state_return_est
             targets.append(return_estimation[0])
-            features.append(initial_state.flatten()[0])
+            features.append(initial_state.flatten()[0])#may want to change this to just append the board
         targets = np.array(targets)
         features = np.array(features)
         self.model.fit(features, targets, verbose=1, validation_split=1)
@@ -93,24 +93,30 @@ class DQNAgent:
 
         # update the explore/exploit chance
         # todo: this needs to only be updated after a episode has finished
-        if self.memory is not None:
-            print(len(self.memory))
+        # if self.memory is not None:
+        #     print(len(self.memory))
+        # if self.epsilon > constants.MIN_EPSILON_VALUE and self.memory is not None and \
+        #         len(self.memory) == max_memory_size:
+        #     self.epsilon *= epsilon_decay_rate
+        return nextAction
+
+    def update_epsilon(self, epsilon_decay_rate, max_memory_size):
         if self.epsilon > constants.MIN_EPSILON_VALUE and self.memory is not None and \
                 len(self.memory) == max_memory_size:
-            self.epsilon *= constants.EPSILON_DECAY_RATE
-        return nextAction
+            self.epsilon *= epsilon_decay_rate
 
     '''
     adds a new memory to the agent's memory.
     if the memory is already full, the first memory is removed
     '''
-    def add(self, new_memory, max_memory_capacity):
+    def add(self, new_memory, max_memory_capacity, epsilon_decay_rate):
         if self.memory is None:
             self.memory = np.array([new_memory])
         else:
-            self.memory = np.vstack([self.memory, new_memory])
+            self.memory = np.append(self.memory, [new_memory], axis=0)
             if len(self.memory) > max_memory_capacity:
-                self.memory = self.memory[1:, :]
+               self.memory = self.memory[1:]
+               self.update_epsilon(epsilon_decay_rate, max_memory_capacity)
 
 
 

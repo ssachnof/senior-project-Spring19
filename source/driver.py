@@ -38,8 +38,7 @@ def get_initial_state(playerTurn):
         return State(initial_board, constants.PLAYER2)
 
 
-
-def train_model(max_live_episodes, max_training_episodes, max_memory_capacity):
+def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, epsilon_decay_rate):
     # note: the frozen and active networks represent opposite players at ALL TIMES !!!!
 
     # initialize each agent
@@ -53,18 +52,21 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity):
 
     plot_x = []
     plot_y = []
-
+    min_epsilon = .1
     plt.xlabel('Episode')
     plt.ylabel('Consecutive Moves')
-    plt.title("live episodes : " + str(max_live_episodes) + " training episodes: " +
-              str(max_training_episodes) + "mem cap: " + str(max_memory_capacity))
+    plt.title("live episodes: " + str(max_live_episodes) + " training episodes: " +
+              str(max_training_episodes) + "\n mem cap: " + str(max_memory_capacity) + ' epsilon decay rate: ' + str(epsilon_decay_rate))
     for episode_number in range(constants.MAX_EPISODES):
-        if episode_number > 7000:
+        if active_network['training'].epsilon <= min_epsilon and active_network['target'].epsilon <= min_epsilon and\
+            frozen_network['training'].epsilon <= min_epsilon and frozen_network['target'].epsilon <= min_epsilon and\
+                episode_number > 6000:
             plt.plot(plot_x, plot_y)
-            plt.savefig(str(max_live_episodes) + "-" + str(max_training_episodes) + "-" + str(max_memory_capacity) + ".png")
+            plt.savefig(str(max_live_episodes) + "-" + str(max_training_episodes) + "-" + str(max_memory_capacity) + "-" +
+                        str(epsilon_decay_rate) + ".png")
             plt.close()
             print("saving figure to path " + str(max_live_episodes) + "-" + str(max_training_episodes) + "-" +
-                  str(max_memory_capacity) + ".png")
+                  str(max_memory_capacity) + '-' + str(epsilon_decay_rate) + ".png")
             break
 
         print("EPISODE_NUMBER: ", episode_number)
@@ -83,7 +85,8 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity):
             #need to immitate that opp saw something and couldn't make a move-- just have to swap the player's turn it is
             if done:
                 intermediate_state.playerTurn *= -1
-                active_network["training"].add((done, initial_state, action, intermediate_state, reward), max_memory_capacity)
+                active_network["training"].add((done, initial_state, action, intermediate_state, reward), max_memory_capacity,
+                                               epsilon_decay_rate)
                 break
             else:
                 consecutive_moves+=1
@@ -98,7 +101,8 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity):
                 #     reward = 0
                 reward *= -1
                 active_network["training"].currentState = final_state
-                active_network["training"].add((done, initial_state, action, final_state, reward), max_memory_capacity)
+                active_network["training"].add((done, initial_state, action, final_state, reward), max_memory_capacity,
+                                               epsilon_decay_rate)
             # if done and reward == 0:
             #     print("tie game")
             #     print(current_state.board)
@@ -132,7 +136,9 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity):
         # swap target and training network case
         # if active_network["training"].current_training_episodes > \
         #     active_network["training"].max_training_episodes:
-        if active_network["training"].current_training_episodes > max_training_episodes:
+        correct_swapping = False
+        # if active_network["training"].current_training_episodes >= max_training_episodes:
+        if (episode_number + 1) % max_training_episodes == 0:
             print("\n\n\n#########SWAPPING TARGET AND TRAINING############\n\n\n")
             # exit("swapping target and training")
 
@@ -147,7 +153,9 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity):
 
         # swap active and frozen network case
         # if agent_live_episodes > active_network["training"].max_agent_live_episodes:
-        if agent_live_episodes > max_live_episodes:
+        # if agent_live_episodes >= max_live_episodes:
+        if (episode_number + 1) % max_live_episodes == 0:
+            print("!!!!!!!!!!!!!!!!!!!SWAPPING LIVE AGENTS!!!!!!!!!!!!!!!!!!")
             # swap acitve and frozen networks and possibly update the max agent live episodes field
             active, frozen = swap_networks(active_network["training"], frozen_network["training"])
             active_network["training"] = active
@@ -155,12 +163,13 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity):
             active, frozen = swap_networks(active_network["target"], frozen_network["target"])
             active_network["target"] = active
             frozen_network["target"] = frozen
-            print(active_network["target"].epsilon)
-            print(active_network["training"].epsilon)
-            print(frozen_network["target"].epsilon)
-            print(frozen_network["training"].epsilon)
+            print('active target epsilon: ', active_network["target"].epsilon)
+            print('active training epsilon: ', active_network["training"].epsilon)
+            print('frozen target epsilon: ', frozen_network["target"].epsilon)
+            print('frozen training epsilon: ', frozen_network["training"].epsilon)
+            active_network['training'].current_training_episodes = 0
+            active_network['target'].current_training_episodes = 0
             agent_live_episodes = 0
-            print("!!!!!!!!!!!!!!!!!!!SWAPPING LIVE AGENTS!!!!!!!!!!!!!!!!!!")
 
 #todo: make sure that the fix you added to this is actually a fix
 def swap_networks(network1, network2):
@@ -172,7 +181,7 @@ def swap_networks(network1, network2):
     # network1.model.save("temp1_weights.h5")
     print("B")
     temp1 = DQNAgent(network1.currentState, network1.player)
-    temp1.memory = copy.copy(network1.memory)
+    temp1.memory = copy.deepcopy(network1.memory)
     temp1.currentState = copy.deepcopy(network1.currentState)
     print("C")
     # in1 = open("temp1_weights.pickle", "rb")
@@ -190,7 +199,7 @@ def swap_networks(network1, network2):
     # pickle.dump(network2.model, out2)
     # out2.close()
     temp2 = DQNAgent(network2.currentState, network2.player)
-    temp2.memory = copy.copy(network2.memory)
+    temp2.memory = copy.deepcopy(network2.memory)
     temp2.currentState = copy.deepcopy(network2.currentState)
 
     # in2 = open("temp2_weights.pickle", "rb")
@@ -217,16 +226,14 @@ def main():
     live_ranges = 2 ** live_ranges
     for live_range in live_ranges:
         maxTrainingExp = int(math.log2(live_range))
-        for trainingExp in range(6, maxTrainingExp):
+        #reminder remember to change to 6 as min bound later
+        #todo: I wonder if the way you are removing stuff from an array is inefficient
+        for trainingExp in range(7, maxTrainingExp):
             training_range = 2 ** trainingExp
-            for mem_cap_exp in range(8, 12):
-                max_memory_capacity = 2 ** mem_cap_exp
-                print('max_mem: ', max_memory_capacity)
-                train_model(live_range, training_range, max_memory_capacity)
-
-    print(live_ranges)
-    exit()
-    #
-    # train_model()
+            for mem_cap_exp in range(9, 11):
+                for epsilon_decay in range(1,10, 2):
+                    max_memory_capacity = 2 ** mem_cap_exp
+                    epsilon_decay_rate = .90 + (epsilon_decay / 100)
+                    train_model(live_range, training_range, max_memory_capacity, epsilon_decay_rate)
 
 main()

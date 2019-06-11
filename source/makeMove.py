@@ -170,13 +170,13 @@ def get_next_state(initial_state, action, debug= False):
     # print("valid move found")
     # alter the state if the move that was made was valid
     done, final_state, reward = make_move(initial_state, piece_initial_location, piece_final_location)
-    if debug:
-        print("done: ", done)
-        print("initial board: \n", initial_state.board)
-        print("\n\nfinal board: \n", final_state.board)
-        print("\n\nnext_turn ", final_state.playerTurn)
-        print("reward: ", reward)
-        exit("debug exit")
+    # if debug:
+    #     print("done: ", done)
+    #     print("initial board: \n", initial_state.board)
+    #     print("\n\nfinal board: \n", final_state.board)
+    #     print("\n\nnext_turn ", final_state.playerTurn)
+    #     print("reward: ", reward)
+    #     exit("debug exit")
     return done, initial_state, action, final_state, reward
 
 
