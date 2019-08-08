@@ -4,7 +4,8 @@
 Samuel Sachnoff
 
 ## Project Advisor:
-Franz Kurfess
+Franz Kurfess, Professor at California Polytechnic State Unviersity-- San Luis Obispo
+http://users.csc.calpoly.edu/~fkurfess/Franz-Kurfess-index-F16.html
 
 
 ### Interim Report: 
