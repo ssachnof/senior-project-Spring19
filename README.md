@@ -17,3 +17,6 @@ https://docs.google.com/document/d/1JMps_w8RbU8RHn5TZKaHamkLPqaAdD3oiXSXDnbo_-c/
 ### Progress Reports: 
 https://docs.google.com/document/d/1EpmHQC9oioChKgfscg9njwoItwmj1jwhzkskYpGYMRE/edit?usp=sharing
 
+### Running Instrcutions:
+Please type python3 driver.py on the command line to run the model training
+
