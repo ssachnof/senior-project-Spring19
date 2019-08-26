@@ -114,10 +114,11 @@ class DQNAgent:
         if self.memory is None:
             self.memory = np.array([new_memory])
         else:
-            self.memory = np.append(self.memory, [new_memory], axis=0)
-            if len(self.memory) > max_memory_capacity:
-               self.memory = self.memory[1:]
-               self.update_epsilon(epsilon_decay_rate, max_memory_capacity)
-
+            # self.memory = np.append(self.memory, [new_memory], axis=0)
+            if len(self.memory) >= max_memory_capacity:
+                self.memory[:-1] = self.memory[1:]; self.memory[-1] = new_memory
+                self.update_epsilon(epsilon_decay_rate, max_memory_capacity)
+            else:
+                self.memory = np.append(self.memory, [new_memory], axis=0)
 
 

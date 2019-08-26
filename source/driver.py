@@ -58,9 +58,10 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
     plt.title("live episodes: " + str(max_live_episodes) + " training episodes: " +
               str(max_training_episodes) + "\n mem cap: " + str(max_memory_capacity) + ' epsilon decay rate: ' + str(epsilon_decay_rate))
     for episode_number in range(constants.MAX_EPISODES):
-        if active_network['training'].epsilon <= min_epsilon and active_network['target'].epsilon <= min_epsilon and\
-            frozen_network['training'].epsilon <= min_epsilon and frozen_network['target'].epsilon <= min_epsilon and\
-                episode_number > 6000:
+        if episode_number > 15000:
+            # if active_network['training'].epsilon <= min_epsilon and active_network['target'].epsilon <= min_epsilon and\
+            #     frozen_network['training'].epsilon <= min_epsilon and frozen_network['target'].epsilon <= min_epsilon and\
+            #         episode_number > 10000:
             plt.plot(plot_x, plot_y)
             plt.savefig(str(max_live_episodes) + "-" + str(max_training_episodes) + "-" + str(max_memory_capacity) + "-" +
                         str(epsilon_decay_rate) + ".png")
@@ -178,24 +179,23 @@ def swap_networks(network1, network2):
     # pickle.dump(network1.model, out1)
     # out1.close()
 
-    # network1.model.save("temp1_weights.h5")
+    network1.model.save("net1_weights.h5")
     print("B")
-    temp1 = DQNAgent(network1.currentState, network1.player)
-    temp1.memory = copy.deepcopy(network1.memory)
-    temp1.currentState = copy.deepcopy(network1.currentState)
+    temp1 = DQNAgent(network2.currentState, network2.player)
+    temp1.memory = copy.deepcopy(network2.memory)
+    temp1.currentState = copy.deepcopy(network2.currentState)
     print("C")
     # in1 = open("temp1_weights.pickle", "rb")
-    temp1.model = network1.model
     # in1.close()
     print("D")
-    temp1.epsilon = network1.epsilon
-    temp1.current_training_episodes = network1.current_training_episodes
-    temp1.max_training_episodes = network1.max_training_episodes
-    temp1.max_agent_live_episodes = network1.max_agent_live_episodes
-    temp1.player = network1.player
+    temp1.epsilon = network2.epsilon
+    temp1.current_training_episodes = network2.current_training_episodes
+    temp1.max_training_episodes = network2.max_training_episodes
+    temp1.max_agent_live_episodes = network2.max_agent_live_episodes
+    temp1.player = network2.player
 
     # out2 = open("temp2_weights.pickle", "wb")
-    # network2.model.save("temp2_weights.h5")
+    network2.model.save("net2_weights.h5")
     # pickle.dump(network2.model, out2)
     # out2.close()
     temp2 = DQNAgent(network2.currentState, network2.player)
@@ -203,13 +203,14 @@ def swap_networks(network1, network2):
     temp2.currentState = copy.deepcopy(network2.currentState)
 
     # in2 = open("temp2_weights.pickle", "rb")
-    temp2.model = network2.model
+    temp2.model = models.load_model('net1_weights.h5')
+    temp1.model = models.load_model('net2_weights.h5')
     # in2.close()
-    temp2.epsilon = network2.epsilon
-    temp2.current_training_episodes = network2.current_training_episodes
-    temp2.max_training_episodes = network2.max_training_episodes
-    temp2.max_agent_live_episodes = network2.max_agent_live_episodes
-    temp2.player = network2.player
+    temp2.epsilon = network1.epsilon
+    temp2.current_training_episodes = network1.current_training_episodes
+    temp2.max_training_episodes = network1.max_training_episodes
+    temp2.max_agent_live_episodes = network1.max_agent_live_episodes
+    temp2.player = network1.player
 
     # network1 = temp2
     # network2 = temp1
@@ -222,7 +223,8 @@ def play_checkers():
     pass
 
 def main():
-    live_ranges = np.arange(10, 17)
+    # live_ranges = np.arange(10, 17)
+    live_ranges = np.array([10, 11, 12])
     live_ranges = 2 ** live_ranges
     for live_range in live_ranges:
         maxTrainingExp = int(math.log2(live_range))
@@ -230,11 +232,16 @@ def main():
         #todo: I wonder if the way you are removing stuff from an array is inefficient
         for trainingExp in range(7, maxTrainingExp):
             training_range = 2 ** trainingExp
-            for mem_cap_exp in range(10, 11):
-                for epsilon_decay in range(3,10, 2):
+            for mem_cap_exp in range(9,10):
+                for epsilon_decay in range(1,10, 2):
                     max_memory_capacity = 2 ** mem_cap_exp
-                    print(max_memory_capacity)
-                    epsilon_decay_rate = .9 + (epsilon_decay / 100)
+
+                    # epsilon_decay_rate = .9 + (epsilon_decay / 100)
+                    epsilon_decay_rate = .99 + epsilon_decay / 1000
+                    print("TRAINING AGENT WITH PARAMETERS: ")
+                    print(live_range, training_range, max_memory_capacity, epsilon_decay_rate)
+                    #train_model(live_range, training_range, max_memory_capacity, epsilon_decay_rate)
+                    # epsilon_decay_rate = (epsilon_decay_rate / 10) + .9
                     train_model(live_range, training_range, max_memory_capacity, epsilon_decay_rate)
 
 main()
