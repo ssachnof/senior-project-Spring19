@@ -50,7 +50,7 @@ class DQNAgent:
     preforms memory replay on the model 
     target_network: DQN representing the active agent's target Q values
     '''
-    def memory_replay(self, target_network):
+    def memory_replay(self, target_network, max_memory_capacity, epsilon_decay_rate):
         # create a minibatch of size 64
         # print(self.memory)
         sample_size = int(.1 * len(self.memory))
@@ -59,6 +59,7 @@ class DQNAgent:
         targets = []
         features = []
         # get the target Q values for all actions
+        self.update_epsilon(epsilon_decay_rate, max_memory_capacity)
         for done,initial_state, action, final_state, reward in memory_sample:
             # for the next line of code, you need to ensure that you are
             next_state_return_est = constants.DISCOUNT_FACTOR * max(target_network.model.predict(final_state.flatten())[0]) + reward
@@ -117,7 +118,6 @@ class DQNAgent:
             # self.memory = np.append(self.memory, [new_memory], axis=0)
             if len(self.memory) >= max_memory_capacity:
                 self.memory[:-1] = self.memory[1:]; self.memory[-1] = new_memory
-                self.update_epsilon(epsilon_decay_rate, max_memory_capacity)
             else:
                 self.memory = np.append(self.memory, [new_memory], axis=0)
 
