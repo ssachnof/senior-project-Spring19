@@ -132,7 +132,7 @@ else : 0
 
 
 
-def get_next_state(initial_state, action, debug= False):
+def get_next_state(initial_state, DQNAgent, maxMemorySize, distanceFromBest, action, debug= False):
 
     initial_board = initial_state.board
     isKing = False
@@ -165,8 +165,28 @@ def get_next_state(initial_state, action, debug= False):
     piece_final_location = get_final_piece_location(initial_state, piece_initial_location, move_num)
 
     # check all other cases for valid moves
-    if not is_valid_move(initial_state, piece_initial_location, piece_final_location, isKing):
-        return True, initial_state, action, initial_state, -2
+    while not is_valid_move(initial_state, piece_initial_location, piece_final_location, isKing):
+        action, distanceFromBest  = DQNAgent.get_next_action(maxMemorySize, distanceFromBest=distanceFromBest)
+        isKing = False
+        piece_initial_location = None
+
+        # map action to piece numbers and move numbers
+        move_num = action % 8
+        piece_num = (action // 8) + 1
+        piece_num *= initial_state.playerTurn
+        # print(piece_num)
+        # print(move_num)
+        # find piece_num on the board
+        for row in range(len(initial_board)):
+            for col in range(len(initial_board[0])):
+                if initial_board[row, col] == piece_num:
+                    piece_initial_location = (row, col)
+                elif initial_board[row, col] // 100 == piece_num:
+                    piece_initial_location = (row, col)
+                    isKing = True
+        piece_final_location = get_final_piece_location(initial_state, piece_initial_location, move_num)
+        print('distance: ', distanceFromBest)
+        # return True, initial_state, action, initial_state, -2
     # print("valid move found")
     # alter the state if the move that was made was valid
     done, final_state, reward = make_move(initial_state, piece_initial_location, piece_final_location)
@@ -231,6 +251,16 @@ assumes the given final location is valid
 def make_move(initial_state, piece_initial_location, piece_final_location):
     final_board = initial_state.board.copy()
     # you need to remove the piece that was jumped over
+    print('current_turn: ', initial_state.playerTurn)
+    x = (piece_final_location[0] - piece_initial_location[0]) **2
+    y = (piece_final_location[1] - piece_initial_location[1]) **2
+    fj = False
+    if math.sqrt(x + y) > 1.5:
+        print('found_jump')
+        print('++++++++++++++++++')
+        fj = True
+        print(initial_state.board)
+    loop_running = False
     if is_jump(piece_initial_location, piece_final_location):
         loc_change = np.array([piece_final_location[0] - piece_initial_location[0],
                       piece_final_location[1] - piece_initial_location[1]])
@@ -238,6 +268,10 @@ def make_move(initial_state, piece_initial_location, piece_final_location):
         loc_to_remove = (piece_initial_location[0] + loc_change[0], piece_initial_location[1] + loc_change[1])
         assert(0 != initial_state.board[loc_to_remove[0], loc_to_remove[1]])
         initial_state.board[loc_to_remove[0], loc_to_remove[1]] = 0
+        loop_running = True
+        pass
+    if fj and not loop_running:
+        exit("JUMP LOOP DIDNT RUN!!!!!!")
 
     # swap the piece initial location and piece final location
     temp = final_board[piece_initial_location[0], piece_initial_location[1]]
@@ -246,7 +280,8 @@ def make_move(initial_state, piece_initial_location, piece_final_location):
     final_state = State(final_board, initial_state.playerTurn * -1)
     createKing(final_state, piece_final_location, initial_state.playerTurn)
     done, reward = get_reward(final_state)
-
+    print(final_state.board)
+    print("++++++++++++++++++++++++")
     return done, final_state, reward
 
 
@@ -262,7 +297,7 @@ def get_reward(final_state):
 
     if next_player_pieces == []: # somebody won the game
         return True, 1
-
+    print(next_player_pieces)
     # see if there exists a valid move for at least 1 piece of the next player-- check for tie condition
     for piece_loc in next_player_pieces:
         piece_val = final_state.board[piece_loc[0], piece_loc[1]]
@@ -273,6 +308,7 @@ def get_reward(final_state):
             if is_valid_move(final_state, piece_loc,
                              get_final_piece_location(final_state, piece_loc, move_num), isKing):
                 # the game is not terminal/ not a tie
+                print(piece_loc, move_num)
                 return False, 0
     # the game resulted in a tie
     return True, 0
@@ -281,11 +317,14 @@ def get_reward(final_state):
 def createKing(final_state, pieceLoc, playerNum):
     row = 0
     pieceVal = final_state.board[pieceLoc[row], pieceLoc[1]]
+    print(pieceVal)
+    rowNum = pieceLoc[0]
     assert(final_state.board[pieceLoc[0], pieceLoc[1]] != 0)
     if abs(pieceVal) // 100 == 0:
-        if row == 0 and playerNum == constants.PLAYER1:
+        if rowNum == 0 and playerNum == constants.PLAYER1:
             final_state.board[pieceLoc[row], pieceLoc[1]] *= 100
-        elif row == 7 and playerNum == constants.PLAYER2:
+        elif rowNum == 7 and playerNum == constants.PLAYER2:
+            print(final_state.board)
             final_state.board[pieceLoc[row], pieceLoc[1]] *= 100
 
 

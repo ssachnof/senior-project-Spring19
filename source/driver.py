@@ -81,18 +81,22 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
             current_state = active_network["training"].currentState
             # print()
             # print("turn: ", current_state.playerTurn)
-            action = active_network["training"].get_next_action(max_memory_capacity)
-            done, initial_state, action, intermediate_state, reward = get_next_state(current_state, action)
+            action, _ = active_network["training"].get_next_action(max_memory_capacity, 0)
+            done, initial_state, action, intermediate_state, reward = get_next_state(current_state, active_network['training'], max_memory_capacity, 0, action)
             #need to immitate that opp saw something and couldn't make a move-- just have to swap the player's turn it is
             if done:
                 intermediate_state.playerTurn *= -1
                 active_network["training"].add((done, initial_state, action, intermediate_state, reward), max_memory_capacity,
                                                epsilon_decay_rate)
+                if reward != -2:
+                    print(reward)
+                    print(active_network['training'].currentState.board)
+                    exit("SUCCESS!!!!!!")
                 break
             else:
                 consecutive_moves+=1
-                opp_action = np.argmax(frozen_network["target"].model.predict(intermediate_state.flatten()))
-                done, _, _, final_state, reward = get_next_state(intermediate_state, opp_action)
+                opp_action = np.argmax(frozen_network["target"].model.predict(intermediate_state.flatten()))#note that you will need to change s.t. a valid move is chosen
+                done, _, opp_action, final_state, reward = get_next_state(intermediate_state, frozen_network['target'], max_memory_capacity, 0, opp_action)
                 # this not needed because eventually, the opponent will learn to only make valid moves
                 # however, not including it may slow down training, but unsure if including it
                 # will mess up the training process
@@ -104,6 +108,10 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
                 active_network["training"].currentState = final_state
                 active_network["training"].add((done, initial_state, action, final_state, reward), max_memory_capacity,
                                                epsilon_decay_rate)
+                print(initial_state.board)
+                print("------------------------")
+                print(final_state.board)
+
             # if done and reward == 0:
             #     print("tie game")
             #     print(current_state.board)
@@ -182,8 +190,9 @@ def swap_networks(network1, network2):
     # pickle.dump(network1.model, out1)
     # out1.close()
 
-    network1.model.save("net1_weights.h5")
-    network2.model.save('net2_weights.h5')
+    # network1.model.save("net1_weights.h5")
+    # network2.model.save('net2_weights.h5')
+    network1.model = network2.model
     print("B")
     temp1 = DQNAgent(network2.currentState, network2.player)
     temp1.memory = copy.deepcopy(network2.memory)
@@ -206,10 +215,12 @@ def swap_networks(network1, network2):
     temp2 = DQNAgent(network1.currentState, network1.player)
     temp2.memory = copy.deepcopy(network1.memory)
     temp2.currentState = copy.deepcopy(network1.currentState)
+    temp2.model = network1.model
+    temp1.model = network2.model
 
     # in2 = open("temp2_weights.pickle", "rb")
-    temp2.model = models.load_model('net1_weights.h5')
-    temp1.model = models.load_model('net2_weights.h5')
+    # temp2.model = models.load_model('net1_weights.h5')
+    # temp1.model = models.load_model('net2_weights.h5')
     # in2.close()
     temp2.epsilon = network1.epsilon
     temp2.current_training_episodes = network1.current_training_episodes

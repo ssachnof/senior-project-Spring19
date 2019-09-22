@@ -83,9 +83,12 @@ class DQNAgent:
     use an epsilon greedy policy to get the next move
     returns the number of the next action
     '''
-    def get_next_action(self, max_memory_size):
+    def get_next_action(self, max_memory_size, distanceFromBest = 0):
         if random.uniform(0,1) <= self.epsilon: # take a random move
             nextAction = random.randint(0, 95)
+            return nextAction, distanceFromBest
+            # distanceFromBest = 0
+
             # print("random move: ", nextAction)
         else:
             # print(self.currentState.flatten().shape)
@@ -100,7 +103,21 @@ class DQNAgent:
         # if self.epsilon > constants.MIN_EPSILON_VALUE and self.memory is not None and \
         #         len(self.memory) == max_memory_size:
         #     self.epsilon *= epsilon_decay_rate
-        return nextAction
+        results = self.model.predict(self.currentState.flatten())[0]
+        results = np.sort(results.flatten())[-1::-1]
+        valueToFind = results[distanceFromBest]
+
+        predicted_values = self.model.predict(self.currentState.flatten())[0]
+        # print(predicted_values)
+        # print(valueToFind)
+        # print(np.max(predicted_values))
+        nextAction = np.where(predicted_values == valueToFind)[0]
+        if distanceFromBest + 1 >= 96:
+            exit("!!!!!!!!!!!!!!DISTANCE FROM BEST TOO LARGE!!!!!!!!!!!!!")
+        return nextAction, distanceFromBest + 1
+
+
+
 
     def update_epsilon(self, epsilon_decay_rate, max_memory_size):
         if self.epsilon > constants.MIN_EPSILON_VALUE and self.memory is not None and \
