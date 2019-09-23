@@ -3,6 +3,7 @@ from source.DQNAgent import DQNAgent
 from source import constants
 from source.makeMove import State
 from source.makeMove import get_next_state
+from source.makeMove import get_all_legal_moves
 import numpy as np
 import copy
 import tensorflow
@@ -81,8 +82,9 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
             current_state = active_network["training"].currentState
             # print()
             # print("turn: ", current_state.playerTurn)
-            action, _ = active_network["training"].get_next_action(max_memory_capacity, 0)
-            done, initial_state, action, intermediate_state, reward = get_next_state(current_state, active_network['training'], max_memory_capacity, 0, action)
+            legal_moves = get_all_legal_moves(current_state)
+            action, _ = active_network["training"].get_next_action(max_memory_capacity, legal_moves, 0)
+            done, initial_state, action, intermediate_state, reward = get_next_state(current_state, active_network['training'], max_memory_capacity, 0, action, legal_moves)
             #need to immitate that opp saw something and couldn't make a move-- just have to swap the player's turn it is
             if done:
                 intermediate_state.playerTurn *= -1
@@ -94,9 +96,10 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
                     exit("SUCCESS!!!!!!")
                 break
             else:
+                legal_moves = get_all_legal_moves(intermediate_state)
                 consecutive_moves+=1
                 opp_action = np.argmax(frozen_network["target"].model.predict(intermediate_state.flatten()))#note that you will need to change s.t. a valid move is chosen
-                done, _, opp_action, final_state, reward = get_next_state(intermediate_state, frozen_network['target'], max_memory_capacity, 0, opp_action)
+                done, _, opp_action, final_state, reward = get_next_state(intermediate_state, frozen_network['target'], max_memory_capacity, 0, opp_action, legal_moves)
                 # this not needed because eventually, the opponent will learn to only make valid moves
                 # however, not including it may slow down training, but unsure if including it
                 # will mess up the training process

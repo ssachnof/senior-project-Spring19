@@ -132,12 +132,11 @@ else : 0
 
 
 
-def get_next_state(initial_state, DQNAgent, maxMemorySize, distanceFromBest, action, debug= False):
+def get_next_state(initial_state, DQNAgent, maxMemorySize, distanceFromBest, action, legal_moves):
 
     initial_board = initial_state.board
     isKing = False
     piece_initial_location = None
-
     # map action to piece numbers and move numbers
     move_num = action % 8
     piece_num = (action // 8) + 1
@@ -166,7 +165,7 @@ def get_next_state(initial_state, DQNAgent, maxMemorySize, distanceFromBest, act
 
     # check all other cases for valid moves
     while not is_valid_move(initial_state, piece_initial_location, piece_final_location, isKing):
-        action, distanceFromBest  = DQNAgent.get_next_action(maxMemorySize, distanceFromBest=distanceFromBest)
+        action, distanceFromBest  = DQNAgent.get_next_action(maxMemorySize, legal_moves, distanceFromBest=distanceFromBest)
         isKing = False
         piece_initial_location = None
 
@@ -326,5 +325,39 @@ def createKing(final_state, pieceLoc, playerNum):
         elif rowNum == 7 and playerNum == constants.PLAYER2:
             print(final_state.board)
             final_state.board[pieceLoc[row], pieceLoc[1]] *= 100
+
+
+def get_all_legal_moves(currentState):
+    '''
+
+    :param currentState: state
+    :return: dict[int: set[int]
+
+    return value is in the following format: dict[pieceNum: legal_move_values]
+    '''
+
+    legal_moves = set()
+    # for i in range(1, 13):
+    #     legal_moves[i * currentState.playerTurn] = set()
+    board = currentState.board
+    for row_i in range(len(board)):
+        for col_i in range(len(board[0])):
+            board_value = board[row_i][col_i]
+            if board_value != 0 and abs(board_value) // board_value == currentState.playerTurn:
+                #then get all the legal moves for the current player's piece
+                for move_num in range(8):
+                    isKing = False
+                    piece_index = board_value
+                    if abs(board_value) > 100:
+                        isKing = True
+                        piece_index = board_value // 100
+                    initial_piece_loc = (row_i, col_i)
+                    final_piece_location = get_final_piece_location(currentState, initial_piece_loc, move_num)
+                    if is_valid_move(currentState, initial_piece_loc, final_piece_location, isKing):
+                        #legal_moves[piece_index] = legal_moves[piece_index] | {(move_num, piece_index)}
+                        arr_value = ((piece_index - 1) * 8) + move_num
+                        legal_moves = legal_moves | {arr_value}#you may want to verify this later
+    print(legal_moves)
+    return legal_moves
 
 

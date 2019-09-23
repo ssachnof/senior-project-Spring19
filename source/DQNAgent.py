@@ -83,9 +83,12 @@ class DQNAgent:
     use an epsilon greedy policy to get the next move
     returns the number of the next action
     '''
-    def get_next_action(self, max_memory_size, distanceFromBest = 0):
+    def get_next_action(self, max_memory_size, legal_moves, distanceFromBest = 0):
+        print('lm: ', legal_moves)
+        lm = list(legal_moves)
         if random.uniform(0,1) <= self.epsilon: # take a random move
-            nextAction = random.randint(0, 95)
+            # nextAction = random.randint(0, 95)
+            nextAction = random.choice(lm)
             return nextAction, distanceFromBest
             # distanceFromBest = 0
 
@@ -93,28 +96,35 @@ class DQNAgent:
         else:
             # print(self.currentState.flatten().shape)
             # print(self.currentState.flatten())
-            nextAction = np.argmax(self.model.predict(self.currentState.flatten()))
+
+            # return the best legal move to make
+            allActions = self.model.predict(self.currentState.flatten())[0]
+            q_values = []
+            for lm_i in lm:
+                q_values.append(allActions[lm[lm_i]])
+            return lm[np.argmax(np.array(q_values))], distanceFromBest
 
 
-        # update the explore/exploit chance
-        # todo: this needs to only be updated after a episode has finished
-        # if self.memory is not None:
-        #     print(len(self.memory))
-        # if self.epsilon > constants.MIN_EPSILON_VALUE and self.memory is not None and \
-        #         len(self.memory) == max_memory_size:
-        #     self.epsilon *= epsilon_decay_rate
-        results = self.model.predict(self.currentState.flatten())[0]
-        results = np.sort(results.flatten())[-1::-1]
-        valueToFind = results[distanceFromBest]
 
-        predicted_values = self.model.predict(self.currentState.flatten())[0]
-        # print(predicted_values)
-        # print(valueToFind)
-        # print(np.max(predicted_values))
-        nextAction = np.where(predicted_values == valueToFind)[0]
-        if distanceFromBest + 1 >= 96:
-            exit("!!!!!!!!!!!!!!DISTANCE FROM BEST TOO LARGE!!!!!!!!!!!!!")
-        return nextAction, distanceFromBest + 1
+        # # update the explore/exploit chance
+        # # todo: this needs to only be updated after a episode has finished
+        # # if self.memory is not None:
+        # #     print(len(self.memory))
+        # # if self.epsilon > constants.MIN_EPSILON_VALUE and self.memory is not None and \
+        # #         len(self.memory) == max_memory_size:
+        # #     self.epsilon *= epsilon_decay_rate
+        # results = self.model.predict(self.currentState.flatten())[0]
+        # results = np.sort(results.flatten())[-1::-1]
+        # valueToFind = results[distanceFromBest]
+        #
+        # predicted_values = self.model.predict(self.currentState.flatten())[0]
+        # # print(predicted_values)
+        # # print(valueToFind)
+        # # print(np.max(predicted_values))
+        # nextAction = np.where(predicted_values == valueToFind)[0]
+        # if distanceFromBest + 1 >= 96:
+        #     exit("!!!!!!!!!!!!!!DISTANCE FROM BEST TOO LARGE!!!!!!!!!!!!!")
+        # return nextAction, distanceFromBest + 1
 
 
 

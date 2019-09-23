@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c81e8472-89b3-46bb-a28f-54d5448414cb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/source/test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/DQNAgent.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/DQNAgent.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/driver.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/driver.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/makeMove.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/makeMove.py" afterDir="false" />
@@ -22,8 +20,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/source/driver.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="661">
-              <caret line="112" column="40" lean-forward="true" selection-start-line="112" selection-start-column="40" selection-end-line="112" selection-end-column="40" />
+            <state relative-caret-position="262">
+              <caret line="86" column="171" selection-start-line="86" selection-start-column="171" selection-end-line="86" selection-end-column="171" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -51,8 +49,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/source/makeMove.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="384">
-              <caret line="168" column="110" selection-start-line="168" selection-start-column="110" selection-end-line="168" selection-end-column="110" />
+            <state relative-caret-position="541">
+              <caret line="360" column="97" selection-start-line="360" selection-start-column="97" selection-end-line="360" selection-end-column="97" />
               <folding>
                 <element signature="e#290#301#0" expanded="true" />
               </folding>
@@ -63,8 +61,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/source/DQNAgent.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="557">
-              <caret line="107" column="17" lean-forward="true" selection-start-line="107" selection-start-column="17" selection-end-line="107" selection-end-column="17" />
+            <state relative-caret-position="307">
+              <caret line="99" column="83" lean-forward="true" selection-start-line="99" selection-start-column="83" selection-end-line="99" selection-end-column="83" />
               <folding>
                 <element signature="e#89#112#0" expanded="true" />
               </folding>
@@ -136,8 +134,8 @@
       <find>swap</find>
       <find>live</find>
       <find>get_re</find>
-      <find>RET</find>
       <find>exit</find>
+      <find>RET</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -157,9 +155,9 @@
         <option value="$PROJECT_DIR$/source/constants.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/questions.txt" />
         <option value="$PROJECT_DIR$/source/test.py" />
+        <option value="$PROJECT_DIR$/source/makeMove.py" />
         <option value="$PROJECT_DIR$/source/driver.py" />
         <option value="$PROJECT_DIR$/source/DQNAgent.py" />
-        <option value="$PROJECT_DIR$/source/makeMove.py" />
       </list>
     </option>
   </component>
@@ -369,7 +367,7 @@
       <workItem from="1566232114757" duration="17133000" />
       <workItem from="1566840195354" duration="761000" />
       <workItem from="1566841262092" duration="9286000" />
-      <workItem from="1569012398455" duration="10245000" />
+      <workItem from="1569012398455" duration="12926000" />
     </task>
     <task id="LOCAL-00001" summary="Added preliminary class defs and some funtion headers">
       <created>1555983804839</created>
@@ -519,7 +517,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="221707000" />
+    <option name="totallyTimeSpent" value="224388000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -552,7 +550,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32876712" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Terminal" order="10" weight="0.32831737" />
-      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" weight="0.32876712" />
+      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" weight="0.32831737" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -613,7 +611,7 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/senior_project_Spring19$Unittests_for_makeMoveTests_TestCases.coverage" NAME="Unittests for makeMoveTests.TestCases Coverage Results" MODIFIED="1557608420992" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/senior_project_Spring19$Unittests_for_makeMoveTests_TestCases_test2_is_valid_jump.coverage" NAME="Unittests for makeMoveTests.TestCases.test2_is_valid_jump Coverage Results" MODIFIED="1557603674615" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
-    <SUITE FILE_PATH="coverage/senior_project_Spring19$driver.coverage" NAME="driver Coverage Results" MODIFIED="1569195512085" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/source" />
+    <SUITE FILE_PATH="coverage/senior_project_Spring19$driver.coverage" NAME="driver Coverage Results" MODIFIED="1569198110547" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/source" />
     <SUITE FILE_PATH="coverage/senior_project_Spring19$Unittests_for_makeMoveTests_TestCases_test3_is_valid_jump.coverage" NAME="Unittests for makeMoveTests.TestCases.test3_is_valid_jump Coverage Results" MODIFIED="1557604769399" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/senior_project_Spring19$Unittests_for_makeMoveTests_TestCases_test6_is_valid_jump.coverage" NAME="Unittests for makeMoveTests.TestCases.test6_is_valid_jump Coverage Results" MODIFIED="1557605071274" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/senior_project_Spring19$Unittests_for_makeMoveTests_TestCases_test4_is_valid_jump.coverage" NAME="Unittests for makeMoveTests.TestCases.test4_is_valid_jump Coverage Results" MODIFIED="1557603982356" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
@@ -765,9 +763,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/source/1024-256-512-0.991.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/source/1024-128-512-0.997.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
@@ -787,15 +782,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/source/driver.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="661">
-          <caret line="112" column="40" lean-forward="true" selection-start-line="112" selection-start-column="40" selection-end-line="112" selection-end-column="40" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/source/1024-256-512-0.991.png">
+      <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/makeMoveTests.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -810,10 +798,20 @@
     <entry file="file://$PROJECT_DIR$/source/test.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/source/driver.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="262">
+          <caret line="86" column="171" selection-start-line="86" selection-start-column="171" selection-end-line="86" selection-end-column="171" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/source/makeMove.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="168" column="110" selection-start-line="168" selection-start-column="110" selection-end-line="168" selection-end-column="110" />
+        <state relative-caret-position="541">
+          <caret line="360" column="97" selection-start-line="360" selection-start-column="97" selection-end-line="360" selection-end-column="97" />
           <folding>
             <element signature="e#290#301#0" expanded="true" />
           </folding>
@@ -822,8 +820,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/source/DQNAgent.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="557">
-          <caret line="107" column="17" lean-forward="true" selection-start-line="107" selection-start-column="17" selection-end-line="107" selection-end-column="17" />
+        <state relative-caret-position="307">
+          <caret line="99" column="83" lean-forward="true" selection-start-line="99" selection-start-column="83" selection-end-line="99" selection-end-column="83" />
           <folding>
             <element signature="e#89#112#0" expanded="true" />
           </folding>
