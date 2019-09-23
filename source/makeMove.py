@@ -131,10 +131,19 @@ else : 0
 '''
 
 
+def checkBoard(initial_board, piece_num):
+    for row_i in range(len(initial_board)):
+        for col_i in range(len(initial_board[0])):
+            if initial_board[row_i][col_i] == piece_num:
+                return True
+    return False
+
 
 def get_next_state(initial_state, DQNAgent, maxMemorySize, distanceFromBest, action, legal_moves):
 
     initial_board = initial_state.board
+    print('is: ', initial_state.board)
+    print('currentTurn: ', initial_state.playerTurn)
     isKing = False
     piece_initial_location = None
     # map action to piece numbers and move numbers
@@ -148,9 +157,10 @@ def get_next_state(initial_state, DQNAgent, maxMemorySize, distanceFromBest, act
         for col in range(len(initial_board[0])):
             if initial_board[row, col] == piece_num:
                 piece_initial_location = (row, col)
-            elif initial_board[row, col] // 100 == piece_num:
+            elif initial_board[row, col] // 100 == piece_num and not checkBoard(initial_board, piece_num):
                 piece_initial_location = (row, col)
                 isKing = True
+    print('ipl1: ', piece_initial_location, 'pn: ', piece_num, 'action: ', action, 'isKing: ', isKing)
     # note that because the move mapping of actually occurs inside this, it might be better to just pass in the
     # state, idk
 
@@ -183,12 +193,17 @@ def get_next_state(initial_state, DQNAgent, maxMemorySize, distanceFromBest, act
                 elif initial_board[row, col] // 100 == piece_num:
                     piece_initial_location = (row, col)
                     isKing = True
+        assert(piece_initial_location is not None)
         piece_final_location = get_final_piece_location(initial_state, piece_initial_location, move_num)
-        print('distance: ', distanceFromBest)
+        print("STUCK!!!!!")
+        print(piece_initial_location, piece_final_location)
+    print("OUT OF LOOP!!!!!!!")
         # return True, initial_state, action, initial_state, -2
     # print("valid move found")
     # alter the state if the move that was made was valid
     done, final_state, reward = make_move(initial_state, piece_initial_location, piece_final_location)
+    print('action: ', action)
+    print('fs: ', final_state.board)
     # if debug:
     #     print("done: ", done)
     #     print("initial board: \n", initial_state.board)
@@ -248,15 +263,15 @@ assumes the given final location is valid
 
 
 def make_move(initial_state, piece_initial_location, piece_final_location):
+    print('making move: ', piece_initial_location, piece_final_location)
     final_board = initial_state.board.copy()
     # you need to remove the piece that was jumped over
-    print('current_turn: ', initial_state.playerTurn)
     x = (piece_final_location[0] - piece_initial_location[0]) **2
     y = (piece_final_location[1] - piece_initial_location[1]) **2
     fj = False
     if math.sqrt(x + y) > 1.5:
-        print('found_jump')
-        print('++++++++++++++++++')
+        # print('found_jump')
+        # print('++++++++++++++++++')
         fj = True
         print(initial_state.board)
     loop_running = False
@@ -279,8 +294,6 @@ def make_move(initial_state, piece_initial_location, piece_final_location):
     final_state = State(final_board, initial_state.playerTurn * -1)
     createKing(final_state, piece_final_location, initial_state.playerTurn)
     done, reward = get_reward(final_state)
-    print(final_state.board)
-    print("++++++++++++++++++++++++")
     return done, final_state, reward
 
 
@@ -348,15 +361,20 @@ def get_all_legal_moves(currentState):
                 for move_num in range(8):
                     isKing = False
                     piece_index = board_value
-                    if abs(board_value) > 100:
+                    if abs(board_value) >= 100:
                         isKing = True
                         piece_index = board_value // 100
                     initial_piece_loc = (row_i, col_i)
                     final_piece_location = get_final_piece_location(currentState, initial_piece_loc, move_num)
                     if is_valid_move(currentState, initial_piece_loc, final_piece_location, isKing):
+                        print('pn: ', piece_index, 'mn: ', move_num)
+                        print('arr_value: ', str(((abs(piece_index) - 1) * 8) + move_num))
+                        print('fpl: ', final_piece_location)
                         #legal_moves[piece_index] = legal_moves[piece_index] | {(move_num, piece_index)}
-                        arr_value = ((piece_index - 1) * 8) + move_num
+                        arr_value = ((abs(piece_index) - 1) * 8) + move_num
                         legal_moves = legal_moves | {arr_value}#you may want to verify this later
+    l = list(legal_moves)
+    x = 1
     print(legal_moves)
     return legal_moves
 

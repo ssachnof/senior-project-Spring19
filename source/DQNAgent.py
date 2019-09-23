@@ -101,6 +101,7 @@ class DQNAgent:
             allActions = self.model.predict(self.currentState.flatten())[0]
             q_values = []
             for lm_i in lm:
+                print(lm_i)
                 q_values.append(allActions[lm[lm_i]])
             return lm[np.argmax(np.array(q_values))], distanceFromBest
 
