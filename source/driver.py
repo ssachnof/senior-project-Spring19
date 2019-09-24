@@ -83,6 +83,8 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
             # print()
             # print("turn: ", current_state.playerTurn)
             legal_moves = get_all_legal_moves(current_state)
+            print('pt: ', current_state.playerTurn)
+            print('lm: ', legal_moves)
             print(current_state.board)
             action, _ = active_network["training"].get_next_action(max_memory_capacity, legal_moves, 0)
             done, initial_state, action, intermediate_state, reward = get_next_state(current_state, active_network['training'], max_memory_capacity, 0, action, legal_moves)
@@ -92,8 +94,9 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
                 active_network["training"].add((done, initial_state, action, intermediate_state, reward), max_memory_capacity,
                                                epsilon_decay_rate)
                 if reward != -2:
-                    print(reward)
-                    print('final board: \n', active_network['training'].currentState.board)
+                    print('REWARD: ', reward)
+                    # important note: it looks like your final board state is intermediate state, not final state
+                    print('final board: \n', active_network['training'].currentState.board, "\n\n ", intermediate_state.board)
                     exit("SUCCESS!!!!!!")
                 break
             else:
@@ -114,9 +117,9 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
                 active_network["training"].currentState = final_state
                 active_network["training"].add((done, initial_state, action, final_state, reward), max_memory_capacity,
                                                epsilon_decay_rate)
-                print(initial_state.board)
-                print("------------------------")
+                print('DONE: ', done)
                 print(final_state.board)
+                print('DONE')
 
             # if done and reward == 0:
             #     print("tie game")
@@ -184,7 +187,7 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
             print('frozen training epsilon: ', frozen_network["training"].epsilon)
             print(active_network['training'].player, active_network['target'].player,
                   frozen_network['training'].player, frozen_network['target'].player)
-            exit()
+            # exit()
             active_network['training'].current_training_episodes = 0
             active_network['target'].current_training_episodes = 0
             agent_live_episodes = 0

@@ -84,7 +84,7 @@ class DQNAgent:
     returns the number of the next action
     '''
     def get_next_action(self, max_memory_size, legal_moves, distanceFromBest = 0):
-        print('lm: ', legal_moves)
+        # print('lm: ', legal_moves)
         lm = list(legal_moves)
         if random.uniform(0,1) <= self.epsilon: # take a random move
             # nextAction = random.randint(0, 95)
@@ -100,9 +100,9 @@ class DQNAgent:
             # return the best legal move to make
             allActions = self.model.predict(self.currentState.flatten())[0]
             q_values = []
-            for lm_i in lm:
-                print(lm_i)
-                q_values.append(allActions[lm[lm_i]])
+            for l in lm:
+                # print(lm_i)
+                q_values.append(allActions[l])
             return lm[np.argmax(np.array(q_values))], distanceFromBest
 
 
