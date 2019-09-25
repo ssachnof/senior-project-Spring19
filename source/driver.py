@@ -83,29 +83,33 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
             # print()
             # print("turn: ", current_state.playerTurn)
             legal_moves = get_all_legal_moves(current_state)
-            print('pt: ', current_state.playerTurn)
-            print('lm: ', legal_moves)
-            print(current_state.board)
+            # print('pt: ', current_state.playerTurn)
+            # print('lm: ', legal_moves)
+            # print(current_state.board)
             action, _ = active_network["training"].get_next_action(max_memory_capacity, legal_moves, 0)
             done, initial_state, action, intermediate_state, reward = get_next_state(current_state, active_network['training'], max_memory_capacity, 0, action, legal_moves)
+            print('in_s: \n\n',initial_state.board)
+            print('im_s: \n\n', intermediate_state.board)
             #need to immitate that opp saw something and couldn't make a move-- just have to swap the player's turn it is
             if done:
                 intermediate_state.playerTurn *= -1
                 active_network["training"].add((done, initial_state, action, intermediate_state, reward), max_memory_capacity,
                                                epsilon_decay_rate)
-                if reward != -2:
-                    print('REWARD: ', reward)
-                    # important note: it looks like your final board state is intermediate state, not final state
-                    print('final board: \n', active_network['training'].currentState.board, "\n\n ", intermediate_state.board)
-                    exit("SUCCESS!!!!!!")
-                break
+                # if reward != -2:
+                #     print('REWARD: ', reward)
+                #     # important note: it looks like your final board state is intermediate state, not final state
+                #     print('final board: \n', active_network['training'].currentState.board, "\n\n ", intermediate_state.board)
+                #     exit("SUCCESS!!!!!!")
+                # break
             else:
                 legal_moves = get_all_legal_moves(intermediate_state)
                 consecutive_moves+=1
-                print(current_state.board)
+                # print(current_state.board)
                 # opp_action = np.argmax(frozen_network["target"].model.predict(intermediate_state.flatten()))#note that you will need to change s.t. a valid move is chosen
                 opp_action, _ = frozen_network["target"].get_next_action(max_memory_capacity, legal_moves, 0)
                 done, _, opp_action, final_state, reward = get_next_state(intermediate_state, frozen_network['target'], max_memory_capacity, 0, opp_action, legal_moves)
+                print('fs_s: \n\n', final_state.board)
+                # print(final_state.board)
                 # this not needed because eventually, the opponent will learn to only make valid moves
                 # however, not including it may slow down training, but unsure if including it
                 # will mess up the training process
@@ -117,9 +121,9 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
                 active_network["training"].currentState = final_state
                 active_network["training"].add((done, initial_state, action, final_state, reward), max_memory_capacity,
                                                epsilon_decay_rate)
-                print('DONE: ', done)
-                print(final_state.board)
-                print('DONE')
+                # print('DONE: ', done)
+                # print(final_state.board)
+                # print('DONE')
 
             # if done and reward == 0:
             #     print("tie game")

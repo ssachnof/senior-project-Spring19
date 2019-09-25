@@ -175,7 +175,7 @@ def get_next_state(initial_state, DQNAgent, maxMemorySize, distanceFromBest, act
 
     # check all other cases for valid moves
     while not is_valid_move(initial_state, piece_initial_location, piece_final_location, isKing):
-        print(initial_state.board)
+        # print(initial_state.board)
         action, distanceFromBest  = DQNAgent.get_next_action(maxMemorySize, legal_moves, distanceFromBest=distanceFromBest)
         isKing = False
         piece_initial_location = None
@@ -196,14 +196,14 @@ def get_next_state(initial_state, DQNAgent, maxMemorySize, distanceFromBest, act
                     isKing = True
         assert(piece_initial_location is not None)
         piece_final_location = get_final_piece_location(initial_state, piece_initial_location, move_num)
-        print(piece_initial_location, piece_final_location)
+        # print(piece_initial_location, piece_final_location)
         # return True, initial_state, action, initial_state, -2
     # print("valid move found")
     # alter the state if the move that was made was valid
     done, final_state, reward = make_move(initial_state, piece_initial_location, piece_final_location)
-    print('{{{{{{{{{{{{{{{')
-    print(final_state.board)
-    print('{{{{{{{{{{{{{')
+    # print('{{{{{{{{{{{{{{{')
+    # print(final_state.board)
+    # print('{{{{{{{{{{{{{')
     # print('action: ', action)
     # print('fs: ', final_state.board)
     # if debug:
@@ -274,15 +274,10 @@ def make_move(initial_state, piece_initial_location, piece_final_location):
         # print('found_jump')
         # print('++++++++++++++++++')
         fj = True
-        print(initial_state.board)
+        # print(initial_state.board)
     loop_running = False
+    # unwanted mutation might be occuring in this function-- you are modifying initial state vs creating and modifying a final state
     if is_jump(piece_initial_location, piece_final_location):
-        print('--------JUMPING-------')
-        print('il: ', piece_initial_location, 'pv: ',
-              initial_state.board[piece_initial_location[0]][piece_initial_location[1]])
-        print('XXXXXXXXXXXXXXX')
-        print(initial_state.board)
-        print('XXXXXXXXXXXXXX')
         loc_change = np.array([piece_final_location[0] - piece_initial_location[0],
                       piece_final_location[1] - piece_initial_location[1]])
         loc_change = loc_change // 2
@@ -291,9 +286,9 @@ def make_move(initial_state, piece_initial_location, piece_final_location):
         initial_state.board[loc_to_remove[0], loc_to_remove[1]] = 0
         loop_running = True
         final_board = initial_state.board.copy()
-        print('!!!!!!!!!!!!!!!')
-        print(initial_state.board)
-        print('!!!!!!!!!!!!!!!!')
+        # print('!!!!!!!!!!!!!!!')
+        # print(initial_state.board)
+        # print('!!!!!!!!!!!!!!!!')
         pass
     if fj and not loop_running:
         exit("JUMP LOOP DIDNT RUN!!!!!!")
@@ -305,10 +300,10 @@ def make_move(initial_state, piece_initial_location, piece_final_location):
     final_state = State(final_board, initial_state.playerTurn * -1)
     createKing(final_state, piece_final_location, initial_state.playerTurn)
     done, reward = get_reward(final_state)
-    if loop_running:
-        print('+++++++++++')
-        print(final_state.board)
-        print('+++++++++++')
+    # if loop_running:
+    #     print('+++++++++++')
+    #     print(final_state.board)
+    #     print('+++++++++++')
     return done, final_state, reward
 
 
