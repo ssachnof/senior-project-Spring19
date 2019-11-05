@@ -42,7 +42,7 @@ class DQNAgent:
         model.add(tf.layers.Dense(96, activation = 'linear'))
         opt = keras.optimizers.Adam()
         #opt = tf.train.AdamOptimizer(learning_rate=constants.LEARNING_RATE)
-        model.compile(loss='mse', optimizer=opt, metrics=['accuracy'])
+        model.compile(loss='mse', optimizer=opt)
         return model
 
 
@@ -63,26 +63,24 @@ class DQNAgent:
         for done,initial_state, action, final_state, reward in memory_sample:
             # for the next line of code, you need to ensure that you are
             #the next line of code may be an issue when you implement a policy to only choose legal moves
-            print(target_network.model.predict(final_state.flatten())[0])
-            exit()
             next_state_return_est = constants.DISCOUNT_FACTOR * max(target_network.model.predict(final_state.flatten())[0]) + reward
             if done:
                 next_state_return_est = reward
             return_estimation = self.model.predict(initial_state.flatten())
             return_estimation[0][action] = next_state_return_est
             targets.append(return_estimation[0])
+            # print(return_estimation[0])
+            # print(self.model.predict(initial_state.flatten()))
 
             features.append(initial_state.flatten()[0])#may want to change this to just append the board
-            print("PRINTING FEATURES AND TARGETS!!!!")
-            print(features[0])
-            print(targets[0])
+            # print("PRINTING FEATURES AND TARGETS!!!!")
+            # print(features[0])
+            # print(targets[0])
         targets = np.array(targets)
         features = np.array(features)
         self.model.fit(features, targets, verbose=1, validation_split=1)
         # if self.epsilon > constants.MIN_EPSILON_VALUE:
         #     self.epsilon *= constants.EPSILON_DECAY_RATE
-        print("EPSILON: ", self.epsilon)
-        print("Memory replay completed!!!!!!!")
             # print("fitted!!!!!!!!")
 
 
@@ -110,9 +108,9 @@ class DQNAgent:
             for l in lm:
                 # print(lm_i)
                 q_values.append(allActions[l])
-            print(q_values)
-            print(lm)
-            exit()
+            # print(q_values)
+            # print(lm)
+            # exit()
             max_q_pos = np.argmax(np.array(q_values))
             return lm[max_q_pos], distanceFromBest
 

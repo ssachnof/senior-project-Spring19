@@ -1,0 +1,3 @@
+- remove jumped pieces
+- retrain the model
+    - remove the policy mapping in here
