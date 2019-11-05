@@ -131,13 +131,21 @@ else : 0
 '''
 
 
+def checkBoard(initial_board, piece_num):
+    for row_i in range(len(initial_board)):
+        for col_i in range(len(initial_board[0])):
+            if initial_board[row_i][col_i] == piece_num:
+                return True
+    return False
 
-def get_next_state(initial_state, action, debug= False):
 
+def get_next_state(initial_state, DQNAgent, maxMemorySize, distanceFromBest, action, legal_moves):
+    legal_moves = get_all_legal_moves(initial_state)
     initial_board = initial_state.board
+    # print('is: ', initial_state.board)
+    # print('currentTurn: ', initial_state.playerTurn)
     isKing = False
     piece_initial_location = None
-
     # map action to piece numbers and move numbers
     move_num = action % 8
     piece_num = (action // 8) + 1
@@ -149,9 +157,10 @@ def get_next_state(initial_state, action, debug= False):
         for col in range(len(initial_board[0])):
             if initial_board[row, col] == piece_num:
                 piece_initial_location = (row, col)
-            elif initial_board[row, col] // 100 == piece_num:
+            elif initial_board[row, col] // 100 == piece_num and not checkBoard(initial_board, piece_num):
                 piece_initial_location = (row, col)
                 isKing = True
+    # print('ipl1: ', piece_initial_location, 'pn: ', piece_num, 'action: ', action, 'isKing: ', isKing)
     # note that because the move mapping of actually occurs inside this, it might be better to just pass in the
     # state, idk
 
@@ -165,18 +174,65 @@ def get_next_state(initial_state, action, debug= False):
     piece_final_location = get_final_piece_location(initial_state, piece_initial_location, move_num)
 
     # check all other cases for valid moves
-    if not is_valid_move(initial_state, piece_initial_location, piece_final_location, isKing):
-        return True, initial_state, action, initial_state, -2
+    #todo: you should not even need this loop
+
+
+    # while not is_valid_move(initial_state, piece_initial_location, piece_final_location, isKing):
+    #     legal_moves = get_all_legal_moves(initial_state)
+    #     # print(initial_state.board)
+    #     action, distanceFromBest  = DQNAgent.get_next_action(maxMemorySize, legal_moves, distanceFromBest=distanceFromBest)
+    #     isKing = False
+    #     piece_initial_location = None
+    #
+    #     # map action to piece numbers and move numbers
+    #     move_num = action % 8
+    #     piece_num = (action // 8) + 1
+    #     piece_num *= initial_state.playerTurn
+    #     # print(piece_num)
+    #     # print(move_num)
+    #     # find piece_num on the board
+    #     for row in range(8):
+    #         for col in range(8):
+    #             if initial_board[row, col] == piece_num:
+    #                 piece_initial_location = (row, col)
+    #             elif initial_board[row, col] // 100 == piece_num and not checkBoard(initial_board, piece_num):
+    #                 piece_initial_location = (row, col)
+    #                 isKing = True
+    #     assert(piece_initial_location is not None)
+    #     assert(move_num < 8)
+    #     piece_final_location = get_final_piece_location(initial_state, piece_initial_location, move_num)
+    #     if not is_valid_move(initial_state, piece_initial_location, piece_final_location, isKing):
+    #         print('stuck!!!')
+    #         print(initial_state.board)
+    #         print(initial_state.board[piece_initial_location[0]][piece_initial_location[1]], piece_final_location)
+    #         print(legal_moves)
+    #         print(action)
+    #         exit()
+        # print(piece_initial_location, piece_final_location)
+        # return True, initial_state, action, initial_state, -2
     # print("valid move found")
     # alter the state if the move that was made was valid
+    #todo: after get_all_legal_moves is fixed, you should uncomment this!!!!!
+    if not is_valid_move(initial_state, piece_initial_location, piece_final_location, isKing):
+        # print('this should not run!!!!')
+        # exit()
+        print('ILLEGAL MOVE MADE BY AGENT!!!!!!!!')
+        print(piece_initial_location, piece_final_location)
+        exit()
+        return True, initial_state, action, initial_state, -2
     done, final_state, reward = make_move(initial_state, piece_initial_location, piece_final_location)
-    if debug:
-        print("done: ", done)
-        print("initial board: \n", initial_state.board)
-        print("\n\nfinal board: \n", final_state.board)
-        print("\n\nnext_turn ", final_state.playerTurn)
-        print("reward: ", reward)
-        exit("debug exit")
+    # print('{{{{{{{{{{{{{{{')
+    # print(final_state.board)
+    # print('{{{{{{{{{{{{{')
+    # print('action: ', action)
+    # print('fs: ', final_state.board)
+    # if debug:
+    #     print("done: ", done)
+    #     print("initial board: \n", initial_state.board)
+    #     print("\n\nfinal board: \n", final_state.board)
+    #     print("\n\nnext_turn ", final_state.playerTurn)
+    #     print("reward: ", reward)
+    #     exit("debug exit")
     return done, initial_state, action, final_state, reward
 
 
@@ -231,6 +287,16 @@ assumes the given final location is valid
 def make_move(initial_state, piece_initial_location, piece_final_location):
     final_board = initial_state.board.copy()
     # you need to remove the piece that was jumped over
+    x = (piece_final_location[0] - piece_initial_location[0]) **2
+    y = (piece_final_location[1] - piece_initial_location[1]) **2
+    fj = False
+    if math.sqrt(x + y) > 1.5:
+        # print('found_jump')
+        # print('++++++++++++++++++')
+        fj = True
+        # print(initial_state.board)
+    loop_running = False
+    # unwanted mutation might be occuring in this function-- you are modifying initial state vs creating and modifying a final state
     if is_jump(piece_initial_location, piece_final_location):
         loc_change = np.array([piece_final_location[0] - piece_initial_location[0],
                       piece_final_location[1] - piece_initial_location[1]])
@@ -238,6 +304,14 @@ def make_move(initial_state, piece_initial_location, piece_final_location):
         loc_to_remove = (piece_initial_location[0] + loc_change[0], piece_initial_location[1] + loc_change[1])
         assert(0 != initial_state.board[loc_to_remove[0], loc_to_remove[1]])
         initial_state.board[loc_to_remove[0], loc_to_remove[1]] = 0
+        loop_running = True
+        final_board = initial_state.board.copy()
+        # print('!!!!!!!!!!!!!!!')
+        # print(initial_state.board)
+        # print('!!!!!!!!!!!!!!!!')
+        pass
+    if fj and not loop_running:
+        exit("JUMP LOOP DIDNT RUN!!!!!!")
 
     # swap the piece initial location and piece final location
     temp = final_board[piece_initial_location[0], piece_initial_location[1]]
@@ -246,7 +320,10 @@ def make_move(initial_state, piece_initial_location, piece_final_location):
     final_state = State(final_board, initial_state.playerTurn * -1)
     createKing(final_state, piece_final_location, initial_state.playerTurn)
     done, reward = get_reward(final_state)
-
+    # if loop_running:
+    #     print('+++++++++++')
+    #     print(final_state.board)
+    #     print('+++++++++++')
     return done, final_state, reward
 
 
@@ -262,7 +339,6 @@ def get_reward(final_state):
 
     if next_player_pieces == []: # somebody won the game
         return True, 1
-
     # see if there exists a valid move for at least 1 piece of the next player-- check for tie condition
     for piece_loc in next_player_pieces:
         piece_val = final_state.board[piece_loc[0], piece_loc[1]]
@@ -281,11 +357,58 @@ def get_reward(final_state):
 def createKing(final_state, pieceLoc, playerNum):
     row = 0
     pieceVal = final_state.board[pieceLoc[row], pieceLoc[1]]
+    rowNum = pieceLoc[0]
     assert(final_state.board[pieceLoc[0], pieceLoc[1]] != 0)
     if abs(pieceVal) // 100 == 0:
-        if row == 0 and playerNum == constants.PLAYER1:
+        if rowNum == 0 and playerNum == constants.PLAYER1 and abs(pieceVal) <= 12:
             final_state.board[pieceLoc[row], pieceLoc[1]] *= 100
-        elif row == 7 and playerNum == constants.PLAYER2:
+        elif rowNum == 7 and playerNum == constants.PLAYER2 and abs(pieceVal) <= 12:
             final_state.board[pieceLoc[row], pieceLoc[1]] *= 100
+
+#todo: this is potentially returning out of bounds values
+def get_all_legal_moves(currentState):
+    '''
+
+    :param currentState: state
+    :return: dict[int: set[int]
+
+    return value is in the following format: dict[pieceNum: legal_move_values]
+    '''
+
+    legal_moves = set()
+    # for i in range(1, 13):
+    #     legal_moves[i * currentState.playerTurn] = set()
+    board = currentState.board
+    for row_i in range(len(board)):
+        for col_i in range(len(board[0])):
+            board_value = board[row_i][col_i]
+            if board_value != 0 and abs(board_value) // board_value == currentState.playerTurn:
+                #then get all the legal moves for the current player's piece
+                for move_num in range(8):
+                    isKing = False
+                    piece_index = abs(board_value)
+                    if abs(board_value) >= 100:
+                        isKing = True
+                        piece_index = abs(board_value) // 100
+                    initial_piece_loc = (row_i, col_i)
+                    final_piece_location = get_final_piece_location(currentState, initial_piece_loc, move_num)
+                    if is_valid_move(currentState, initial_piece_loc, final_piece_location, isKing):
+                        # print('pn: ', piece_index, 'mn: ', move_num)
+                        # print('arr_value: ', str(((abs(piece_index) - 1) * 8) + move_num))
+                        # print('fpl: ', final_piece_location)
+                        #legal_moves[piece_index] = legal_moves[piece_index] | {(move_num, piece_index)}
+
+                        # this theoretically should not crash but still does
+                        for i in range(96):
+                            if (abs(piece_index) - 1) == (i // 8) and i % 8 == move_num:
+                                arr_value = i
+                                legal_moves = legal_moves | {arr_value}
+                        # arr_value = ((abs(piece_index) - 1) * 8) + move_num
+                        # legal_moves = legal_moves | {arr_value}#you may want to verify this later
+
+    l = list(legal_moves)
+    x = 1
+    # print(legal_moves)
+    return legal_moves
 
 

@@ -1,0 +1,1026 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="c81e8472-89b3-46bb-a28f-54d5448414cb" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Sprites/p1_king.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Sprites/p1_normal.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Sprites/p2_king.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Sprites/p2_normal.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/Controller/DQNController.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/Controller/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/UI/Images/icon.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/UI/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/UI/checkers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/UI/ui.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/todo.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/DQNAgent.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/DQNAgent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/driver.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/driver.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/makeMove.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/makeMove.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/net2_weights.h5" beforeDir="false" afterPath="$PROJECT_DIR$/source/p2_weights.h5" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DefaultGradleProjectSettings">
+    <option name="isMigrated" value="true" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/source/UI/ui.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1440">
+              <caret line="101" column="15" selection-start-line="101" selection-start-column="10" selection-end-line="101" selection-end-column="15" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/source/Controller/DQNController.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1170">
+              <caret line="80" column="29" selection-start-line="80" selection-start-column="29" selection-end-line="80" selection-end-column="29" />
+              <folding>
+                <element signature="e#0#22#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/source/driver.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1125">
+              <caret line="75" column="68" lean-forward="true" selection-start-line="75" selection-start-column="68" selection-end-line="75" selection-end-column="68" />
+              <folding>
+                <element signature="e#0#20#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/source/makeMove.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3758">
+              <caret line="364" column="83" selection-start-line="364" selection-start-column="83" selection-end-line="364" selection-end-column="83" />
+              <folding>
+                <element signature="e#290#301#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/todo.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="30">
+              <caret line="2" column="39" selection-start-line="2" selection-start-column="39" selection-end-line="2" selection-end-column="39" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tests/makeMoveTests.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="5" column="35" selection-start-line="5" selection-start-column="35" selection-end-line="5" selection-end-column="35" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>1024</find>
+      <find>swapping live</find>
+      <find>swapping</find>
+      <find>sav</find>
+      <find>saving</find>
+      <find>temp1</find>
+      <find>update_</find>
+      <find>add</find>
+      <find>memory</find>
+      <find>memory_replay</find>
+      <find>sw</find>
+      <find>swap</find>
+      <find>live</find>
+      <find>get_re</find>
+      <find>RET</find>
+      <find>lm</find>
+      <find>exit()</find>
+      <find>prin</find>
+      <find>current</find>
+      <find>state</find>
+      <find>copy</find>
+      <find>im_s</find>
+      <find>init</find>
+      <find>surface</find>
+      <find>this shoud</find>
+      <find>this sho</find>
+      <find>this shou</find>
+      <find>epsilon</find>
+      <find>exit</find>
+      <find>print</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Samuel Sachnoff &lt;ssachnof@calpoly.edu&gt;" />
+      </list>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/source/driver.ph.py" />
+        <option value="$PROJECT_DIR$/tests/makeMoveTests.py" />
+        <option value="$PROJECT_DIR$/source/constants.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/questions.txt" />
+        <option value="$PROJECT_DIR$/source/test.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
+        <option value="$PROJECT_DIR$/source/DQNAgent.py" />
+        <option value="$PROJECT_DIR$/source/ui.py" />
+        <option value="$PROJECT_DIR$/source/ui2.py" />
+        <option value="$PROJECT_DIR$/source/ui3.py" />
+        <option value="$PROJECT_DIR$/source/checkers-0.2/checkers.py" />
+        <option value="$PROJECT_DIR$/source/UI/checkers.py" />
+        <option value="$PROJECT_DIR$/source/DQNController.py" />
+        <option value="$PROJECT_DIR$/source/Controller/__init__.py" />
+        <option value="$PROJECT_DIR$/todo.txt" />
+        <option value="$PROJECT_DIR$/source/UI/ui.py" />
+        <option value="$PROJECT_DIR$/source/Controller/DQNController.py" />
+        <option value="$PROJECT_DIR$/source/makeMove.py" />
+        <option value="$PROJECT_DIR$/source/driver.py" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="4" />
+    <option name="y" value="23" />
+    <option name="width" value="1436" />
+    <option name="height" value="823" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="PackagesPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="senior-project-Spring19" type="b2602c69:ProjectViewProjectNode" />
+              <item name="senior-project-Spring19" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="senior-project-Spring19" type="b2602c69:ProjectViewProjectNode" />
+              <item name="senior-project-Spring19" type="462c0819:PsiDirectoryNode" />
+              <item name="source" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="senior-project-Spring19" type="b2602c69:ProjectViewProjectNode" />
+              <item name="senior-project-Spring19" type="462c0819:PsiDirectoryNode" />
+              <item name="source" type="462c0819:PsiDirectoryNode" />
+              <item name="Controller" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="senior-project-Spring19" type="b2602c69:ProjectViewProjectNode" />
+              <item name="senior-project-Spring19" type="462c0819:PsiDirectoryNode" />
+              <item name="source" type="462c0819:PsiDirectoryNode" />
+              <item name="UI" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="senior-project-Spring19" type="b2602c69:ProjectViewProjectNode" />
+              <item name="senior-project-Spring19" type="462c0819:PsiDirectoryNode" />
+              <item name="Sprites" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="senior-project-Spring19" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
+            </path>
+            <path>
+              <item name="senior-project-Spring19" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
+              <item name="Scratches" type="d62648e6:ScratchProjectViewPane$MyRootNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="GO_FMT" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="go.gopath.indexing.explicitly.defined" value="true" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/source/Controller" />
+      <recent name="$PROJECT_DIR$/source/UI/Images" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/source" />
+      <recent name="$PROJECT_DIR$/Sprites" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/source/UI" />
+      <recent name="$PROJECT_DIR$/good_configs" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.ui">
+    <configuration name="DQNAgent" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="senior-project-Spring19" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/source" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/source/DQNAgent.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="checkers" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="senior-project-Spring19" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/source/UI" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/source/UI/checkers.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="driver" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="senior-project-Spring19" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/source" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/source/driver.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="ui" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="senior-project-Spring19" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/source/UI" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/source/UI/ui.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests for makeMoveTests.TestCases" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="senior-project-Spring19" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;makeMoveTests.TestCases&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.checkers" />
+      <item itemvalue="Python.DQNAgent" />
+      <item itemvalue="Python.driver" />
+      <item itemvalue="Python.ui" />
+      <item itemvalue="Python tests.Unittests for makeMoveTests.TestCases" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.ui" />
+        <item itemvalue="Python tests.Unittests for makeMoveTests.TestCases" />
+        <item itemvalue="Python.checkers" />
+        <item itemvalue="Python.driver" />
+        <item itemvalue="Python.DQNAgent" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c81e8472-89b3-46bb-a28f-54d5448414cb" name="Default Changelist" comment="" />
+      <created>1555978215426</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1555978215426</updated>
+      <workItem from="1555978219288" duration="9959000" />
+      <workItem from="1556143938455" duration="12367000" />
+      <workItem from="1556818189692" duration="751000" />
+      <workItem from="1556823737419" duration="12663000" />
+      <workItem from="1557162724319" duration="8537000" />
+      <workItem from="1557344461209" duration="7373000" />
+      <workItem from="1557602459370" duration="10701000" />
+      <workItem from="1558205209841" duration="29439000" />
+      <workItem from="1558907674888" duration="862000" />
+      <workItem from="1559416712008" duration="5227000" />
+      <workItem from="1559582206662" duration="10910000" />
+      <workItem from="1559941899456" duration="50975000" />
+      <workItem from="1560133881943" duration="24518000" />
+      <workItem from="1566232114757" duration="17133000" />
+      <workItem from="1566840195354" duration="761000" />
+      <workItem from="1566841262092" duration="9286000" />
+      <workItem from="1569012398455" duration="22986000" />
+      <workItem from="1569363912131" duration="24728000" />
+      <workItem from="1569874670932" duration="8605000" />
+      <workItem from="1570400886534" duration="13948000" />
+      <workItem from="1570768412979" duration="12000" />
+      <workItem from="1570768479618" duration="10000" />
+      <workItem from="1570768831063" duration="31000" />
+      <workItem from="1570998953786" duration="40000" />
+      <workItem from="1571001337167" duration="2731000" />
+      <workItem from="1571608283840" duration="873000" />
+      <workItem from="1571610460932" duration="1000" />
+      <workItem from="1572210087912" duration="6209000" />
+      <workItem from="1572980576240" duration="314000" />
+    </task>
+    <task id="LOCAL-00001" summary="Added preliminary class defs and some funtion headers">
+      <created>1555983804839</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1555983804841</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Added preliminary class defs and some funtion headers">
+      <created>1555983828549</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1555983828549</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Added preliminary class defs and some funtion headers">
+      <created>1555984267709</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1555984267709</updated>
+    </task>
+    <task id="LOCAL-00004" summary="rough DQNAgent architecture complete">
+      <created>1556250650101</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1556250650101</updated>
+    </task>
+    <task id="LOCAL-00005" summary="high level move mapping and reward generation completed. &#10;still need to complete the helper functions in that file.">
+      <created>1556829593541</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1556829593541</updated>
+    </task>
+    <task id="LOCAL-00006" summary="extremely basic outline of training loop completed">
+      <created>1556849527181</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1556849527181</updated>
+    </task>
+    <task id="LOCAL-00007" summary="high level training loop completed">
+      <created>1557192134443</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1557192134444</updated>
+    </task>
+    <task id="LOCAL-00008" summary="high level training loop completed">
+      <created>1557763836230</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1557763836230</updated>
+    </task>
+    <task id="LOCAL-00009" summary="start of debug phase">
+      <created>1558208723829</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1558208723829</updated>
+    </task>
+    <task id="LOCAL-00010" summary="start of debug phase">
+      <created>1558208887328</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1558208887328</updated>
+    </task>
+    <task id="LOCAL-00011" summary="fixed bad reward generation for the opponent">
+      <created>1558214399354</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1558214399354</updated>
+    </task>
+    <task id="LOCAL-00012" summary="basic training loop working. need to change be between s and s' instead&#10;of s and s''.">
+      <created>1558232403109</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1558232403109</updated>
+    </task>
+    <task id="LOCAL-00013" summary="basic training loop working. need to change be between s and s' instead&#10;of s and s''.">
+      <created>1559943751329</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1559943751329</updated>
+    </task>
+    <task id="LOCAL-00014" summary="basic training loop working. need to change be between s and s' instead&#10;of s and s''.">
+      <created>1560025482687</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1560025482687</updated>
+    </task>
+    <task id="LOCAL-00015" summary="basic training loop working. need to change be between s and s' instead&#10;of s and s''.">
+      <created>1560234190146</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1560234190146</updated>
+    </task>
+    <task id="LOCAL-00016" summary="basic training loop working. need to change be between s and s' instead&#10;of s and s''.">
+      <created>1560236593610</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1560236593610</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
+    <servers />
+  </component>
+  <component name="TestHistory">
+    <history-entry file="Unittests_for_makeMoveTests_TestCases_test6_is_valid_jump - 2019.05.11 at 13h 02m 08s.xml">
+      <configuration name="Unittests for makeMoveTests.TestCases.test6_is_valid_jump" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_makeMoveTests_TestCases_test5_is_valid_jump - 2019.05.11 at 13h 03m 44s.xml">
+      <configuration name="Unittests for makeMoveTests.TestCases.test5_is_valid_jump" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_makeMoveTests_TestCases_test6_is_valid_jump - 2019.05.11 at 13h 04m 33s.xml">
+      <configuration name="Unittests for makeMoveTests.TestCases.test6_is_valid_jump" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_makeMoveTests_TestCases - 2019.05.11 at 13h 04m 38s.xml">
+      <configuration name="Unittests for makeMoveTests.TestCases" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_makeMoveTests_TestCases - 2019.05.11 at 13h 04m 51s.xml">
+      <configuration name="Unittests for makeMoveTests.TestCases" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_makeMoveTests_TestCases - 2019.05.11 at 13h 06m 01s.xml">
+      <configuration name="Unittests for makeMoveTests.TestCases" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_makeMoveTests_TestCases - 2019.05.11 at 13h 07m 21s.xml">
+      <configuration name="Unittests for makeMoveTests.TestCases" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_makeMoveTests_TestCases - 2019.05.11 at 13h 07m 47s.xml">
+      <configuration name="Unittests for makeMoveTests.TestCases" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_makeMoveTests_TestCases - 2019.05.11 at 14h 00m 25s.xml">
+      <configuration name="Unittests for makeMoveTests.TestCases" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_makeMoveTests_TestCases - 2019.10.10 at 21h 40m 48s.xml">
+      <configuration name="Unittests for makeMoveTests.TestCases" configurationId="tests" />
+    </history-entry>
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="291950000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="4" y="23" width="1436" height="823" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.3472023" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="Designer" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32831737" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49928263" weight="0.30369356" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49928263" weight="0.95759237" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32876712" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32876712" />
+      <window_info anchor="bottom" id="Database Changes" order="9" />
+      <window_info anchor="bottom" id="Terminal" order="10" weight="0.32831737" />
+      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.50071734" side_tool="true" weight="0.7373461" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Theme Preview" order="4" />
+      <window_info anchor="right" id="Maven" order="5" />
+      <window_info anchor="right" id="Capture Analysis" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="SciView" order="8" weight="0.32998565" />
+      <window_info anchor="right" id="Database" order="9" />
+    </layout>
+    <layout-to-restore>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.30703014" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="Designer" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32831737" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49928263" weight="0.30369356" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49928263" weight="0.95759237" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32876712" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32876712" />
+      <window_info anchor="bottom" id="Database Changes" order="9" />
+      <window_info anchor="bottom" id="Terminal" order="10" weight="0.32831737" />
+      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.50071734" side_tool="true" weight="0.7373461" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Theme Preview" order="4" />
+      <window_info anchor="right" id="Maven" order="5" />
+      <window_info anchor="right" id="Capture Analysis" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="SciView" order="8" weight="0.32998565" />
+      <window_info anchor="right" id="Database" order="9" />
+    </layout-to-restore>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added preliminary class defs and some funtion headers" />
+    <MESSAGE value="rough DQNAgent architecture complete" />
+    <MESSAGE value="high level move mapping and reward generation completed. &#10;still need to complete the helper functions in that file." />
+    <MESSAGE value="extremely basic outline of training loop completed" />
+    <MESSAGE value="high level training loop completed" />
+    <MESSAGE value="start of debug phase" />
+    <MESSAGE value="fixed bad reward generation for the opponent" />
+    <MESSAGE value="basic training loop working. need to change be between s and s' instead&#10;of s and s''." />
+    <option name="LAST_COMMIT_MESSAGE" value="basic training loop working. need to change be between s and s' instead&#10;of s and s''." />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/senior_project_Spring19$Unittests_for_makeMoveTests_TestCases.coverage" NAME="Unittests for makeMoveTests.TestCases Coverage Results" MODIFIED="1570768842479" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/senior_project_Spring19$Unittests_for_makeMoveTests_TestCases_test2_is_valid_jump.coverage" NAME="Unittests for makeMoveTests.TestCases.test2_is_valid_jump Coverage Results" MODIFIED="1557603674615" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/senior_project_Spring19$driver.coverage" NAME="driver Coverage Results" MODIFIED="1569864374929" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/source" />
+    <SUITE FILE_PATH="coverage/senior_project_Spring19$Unittests_for_makeMoveTests_TestCases_test3_is_valid_jump.coverage" NAME="Unittests for makeMoveTests.TestCases.test3_is_valid_jump Coverage Results" MODIFIED="1557604769399" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/senior_project_Spring19$Unittests_for_makeMoveTests_TestCases_test6_is_valid_jump.coverage" NAME="Unittests for makeMoveTests.TestCases.test6_is_valid_jump Coverage Results" MODIFIED="1557605071274" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/senior_project_Spring19$ui.coverage" NAME="ui Coverage Results" MODIFIED="1572216310697" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/source/UI" />
+    <SUITE FILE_PATH="coverage/senior_project_Spring19$Unittests_for_makeMoveTests_TestCases_test4_is_valid_jump.coverage" NAME="Unittests for makeMoveTests.TestCases.test4_is_valid_jump Coverage Results" MODIFIED="1557603982356" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/senior_project_Spring19$Unittests_for_makeMoveTests_TestCases_test5_is_valid_jump.coverage" NAME="Unittests for makeMoveTests.TestCases.test5_is_valid_jump Coverage Results" MODIFIED="1557605022430" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/senior_project_Spring19$Unittests_for_makeMoveTests_TestCases_test1_is_valid_jump.coverage" NAME="Unittests for makeMoveTests.TestCases.test1_is_valid_jump Coverage Results" MODIFIED="1557350715493" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/senior_project_Spring19$DQNAgent.coverage" NAME="DQNAgent Coverage Results" MODIFIED="1569372321285" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/source" />
+    <SUITE FILE_PATH="coverage/senior_project_Spring19$Unittests_for_makeMoveTests_TestCases_test3_is_backwards_move.coverage" NAME="Unittests for makeMoveTests.TestCases.test3_is_backwards_move Coverage Results" MODIFIED="1557350227044" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/senior_project_Spring19$ui2.coverage" NAME="ui2 Coverage Results" MODIFIED="1570401720604" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/source" />
+    <SUITE FILE_PATH="coverage/senior_project_Spring19$scratch.coverage" NAME="scratch Coverage Results" MODIFIED="1569372316557" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
+    <SUITE FILE_PATH="coverage/senior_project_Spring19$checkers.coverage" NAME="checkers Coverage Results" MODIFIED="1570402163451" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/source/UI" />
+    <SUITE FILE_PATH="coverage/senior_project_Spring19$Unittests_for_makeMoveTests_TestCases_test2_is_backwards_move.coverage" NAME="Unittests for makeMoveTests.TestCases.test2_is_backwards_move Coverage Results" MODIFIED="1557350037328" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/senior_project_Spring19$Unittests_for_makeMoveTests_TestCases_test4_is_backwards_move.coverage" NAME="Unittests for makeMoveTests.TestCases.test4_is_backwards_move Coverage Results" MODIFIED="1557350332691" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/source/1024-128-512-0.93.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/1024-128-512-0.9991.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/1024-128-512-0.991.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/1024-128-512-0.99.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/1024-128-512-0.97.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/1024-128-512-0.9992.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/1024-128-1024-0.91.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/1024-128-512-0.91.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/1024-128-1024-0.99.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Untitled.ipynb">
+      <provider selected="true" editor-type-id="jupyter-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/1024-256-512-0.993.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/1024-128-1024-0.93.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/good_configs/1024-128-512-0.9991.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/1024-128-512-0.997.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file:///Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/numpy/core/fromnumeric.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="815" column="4" selection-start-line="815" selection-start-column="4" selection-end-line="815" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/random.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="55">
+          <caret line="261" selection-start-line="261" selection-end-line="261" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/1024-128-512-0.995.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/test.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/1024-128-512-0.999.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/1024-256-512-0.991.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Sprites/p2_normal.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Sprites/p1_king.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/1024-128-512-0.993.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Sprites/p1_normal.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Python/3.7/lib/python/site-packages/arcade/sprite.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="201" column="8" selection-start-line="201" selection-start-column="8" selection-end-line="201" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Python/3.7/lib/python/site-packages/arcade/sprite_list.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="236">
+          <caret line="355" column="25" selection-start-line="355" selection-start-column="19" selection-end-line="355" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Python/3.7/lib/python/site-packages/arcade/arcade_types.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/checkers-0.2/PKG-INFO" />
+    <entry file="file://$PROJECT_DIR$/source/checkers-0.2/checkers.py" />
+    <entry file="file://$PROJECT_DIR$/source/UI/__init__.py" />
+    <entry file="file://$PROJECT_DIR$/source/ui.py" />
+    <entry file="file://$PROJECT_DIR$/source/ui2.py" />
+    <entry file="file://$PROJECT_DIR$/source/ui3.py" />
+    <entry file="file://$USER_HOME$/Library/Caches/IntelliJIdea2019.1/python_stubs/-1199943126/pygame/display.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Caches/IntelliJIdea2019.1/python_stubs/-1199943126/pygame/time.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Python/3.7/lib/python/site-packages/pygame/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="256" column="23" selection-start-line="256" selection-start-column="16" selection-end-line="256" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Caches/IntelliJIdea2019.1/python_stubs/-1199943126/pygame/surface.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="20" column="8" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/Controller/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Caches/IntelliJIdea2019.1/python_stubs/-1199943126/pygame/draw.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="30" column="4" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/questions.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="92" selection-start-line="2" selection-start-column="92" selection-end-line="2" selection-end-column="92" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Python/3.7/lib/python/site-packages/arcade/draw_commands.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="638">
+          <caret line="193" column="48" selection-start-line="193" selection-start-column="39" selection-end-line="193" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/DQNAgent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="218">
+          <caret line="61" column="13" selection-start-line="61" selection-start-column="13" selection-end-line="61" selection-end-column="13" />
+          <folding>
+            <element signature="e#89#112#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/constants.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="585">
+          <caret line="39" column="17" selection-start-line="39" selection-start-column="17" selection-end-line="39" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/UI/checkers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="208" column="18" lean-forward="true" selection-start-line="208" selection-start-column="4" selection-end-line="208" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/UI/ui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1440">
+          <caret line="101" column="15" selection-start-line="101" selection-start-column="10" selection-end-line="101" selection-end-column="15" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/Controller/DQNController.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1170">
+          <caret line="80" column="29" selection-start-line="80" selection-start-column="29" selection-end-line="80" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/todo.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="39" selection-start-line="2" selection-start-column="39" selection-end-line="2" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/makeMoveTests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="5" column="35" selection-start-line="5" selection-start-column="35" selection-end-line="5" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/makeMove.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3758">
+          <caret line="364" column="83" selection-start-line="364" selection-start-column="83" selection-end-line="364" selection-end-column="83" />
+          <folding>
+            <element signature="e#290#301#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/driver.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1125">
+          <caret line="75" column="68" lean-forward="true" selection-start-line="75" selection-start-column="68" selection-end-line="75" selection-end-column="68" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>Python</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>Python 3.7 interpreter library</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>Python 3.7</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>senior-project-Spring19</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.6" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

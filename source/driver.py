@@ -3,6 +3,7 @@ from source.DQNAgent import DQNAgent
 from source import constants
 from source.makeMove import State
 from source.makeMove import get_next_state
+from source.makeMove import get_all_legal_moves
 import numpy as np
 import copy
 import tensorflow
@@ -31,15 +32,13 @@ def get_initial_state(playerTurn):
     initial_board = np.vstack([initial_board, np.array([9, 0, 10, 0, 11, 0, 12, 0])])
     initial_board = np.vstack([initial_board, np.array([0, 5, 0, 6, 0, 7, 0, 8])])
     initial_board = np.vstack([initial_board, np.array([1, 0, 2, 0, 3, 0, 4, 0])])
-
     if playerTurn == constants.PLAYER1:
         return State(initial_board, constants.PLAYER1)
     else:
         return State(initial_board, constants.PLAYER2)
 
 
-
-def train_model(max_live_episodes, max_training_episodes, max_memory_capacity):
+def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, epsilon_decay_rate):
     # note: the frozen and active networks represent opposite players at ALL TIMES !!!!
 
     # initialize each agent
@@ -53,18 +52,28 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity):
 
     plot_x = []
     plot_y = []
-
+    min_epsilon = .1
     plt.xlabel('Episode')
     plt.ylabel('Consecutive Moves')
-    plt.title("live episodes : " + str(max_live_episodes) + " training episodes: " +
-              str(max_training_episodes) + "mem cap: " + str(max_memory_capacity))
+    plt.title("live episodes: " + str(max_live_episodes) + " training episodes: " +
+              str(max_training_episodes) + "\n mem cap: " + str(max_memory_capacity) + ' epsilon decay rate: ' + str(epsilon_decay_rate))
     for episode_number in range(constants.MAX_EPISODES):
-        if episode_number > 7000:
+        if episode_number > 7500:
+            # if active_network['training'].epsilon <= min_epsilon and active_network['target'].epsilon <= min_epsilon and\
+            #     frozen_network['training'].epsilon <= min_epsilon and frozen_network['target'].epsilon <= min_epsilon and\
+            #         episode_number > 10000:
             plt.plot(plot_x, plot_y)
-            plt.savefig(str(max_live_episodes) + "-" + str(max_training_episodes) + "-" + str(max_memory_capacity) + ".png")
+            plt.savefig(str(max_live_episodes) + "-" + str(max_training_episodes) + "-" + str(max_memory_capacity) + "-" +
+                        str(epsilon_decay_rate) + ".png")
             plt.close()
             print("saving figure to path " + str(max_live_episodes) + "-" + str(max_training_episodes) + "-" +
-                  str(max_memory_capacity) + ".png")
+                  str(max_memory_capacity) + '-' + str(epsilon_decay_rate) + ".png")
+            if frozen_network['target'].player == constants.PLAYER2:
+                frozen_network['target'].model.save('p2_weights.h5')
+                active_network['target'].model.save('p1_weights.h5')
+            else:
+                frozen_network['target'].model.save('p1_weights.h5')
+                active_network['target'].model.save('p2_weights.h5')
             break
 
         print("EPISODE_NUMBER: ", episode_number)
@@ -78,17 +87,40 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity):
             current_state = active_network["training"].currentState
             # print()
             # print("turn: ", current_state.playerTurn)
-            action = active_network["training"].get_next_action(max_memory_capacity)
-            done, initial_state, action, intermediate_state, reward = get_next_state(current_state, action)
+            legal_moves = get_all_legal_moves(current_state)
+            # print('pt: ', current_state.playerTurn)
+            # print('lm: ', legal_moves)
+            # print(current_state.board)
+            action, _ = active_network["training"].get_next_action(max_memory_capacity, legal_moves, 0)
+            # print(current_state.playerTurn)
+            done, initial_state, action, intermediate_state, reward = get_next_state(current_state, active_network['training'], max_memory_capacity, 0, action, legal_moves)
+            # print(intermediate_state.playerTurn)
+            # exit()
+            # print('in_s: \n\n',initial_state.board)
+            # print('im_s: \n\n', intermediate_state.board)
             #need to immitate that opp saw something and couldn't make a move-- just have to swap the player's turn it is
             if done:
                 intermediate_state.playerTurn *= -1
-                active_network["training"].add((done, initial_state, action, intermediate_state, reward), max_memory_capacity)
+                active_network["training"].add((done, initial_state, action, intermediate_state, reward), max_memory_capacity,
+                                               epsilon_decay_rate)
+                if not len(active_network["training"].memory) < max_memory_capacity:
+                    active_network["training"].memory_replay(frozen_network["target"], max_memory_capacity, epsilon_decay_rate)
                 break
+                # if reward != -2:
+                #     print('REWARD: ', reward)
+                #     # important note: it looks like your final board state is intermediate state, not final state
+                #     print('final board: \n', active_network['training'].currentState.board, "\n\n ", intermediate_state.board)
+                #     exit("SUCCESS!!!!!!")
+                # break
             else:
+                legal_moves = get_all_legal_moves(intermediate_state)
                 consecutive_moves+=1
-                opp_action = np.argmax(frozen_network["target"].model.predict(intermediate_state.flatten()))
-                done, _, _, final_state, reward = get_next_state(intermediate_state, opp_action)
+                # print(current_state.board)
+                # opp_action = np.argmax(frozen_network["target"].model.predict(intermediate_state.flatten()))#note that you will need to change s.t. a valid move is chosen
+                opp_action, _ = frozen_network["target"].get_next_action(max_memory_capacity, legal_moves, 0)
+                done, _, opp_action, final_state, reward = get_next_state(intermediate_state, frozen_network['target'], max_memory_capacity, 0, opp_action, legal_moves)
+                # print('fs_s: \n\n', final_state.board)
+                # print(final_state.board)
                 # this not needed because eventually, the opponent will learn to only make valid moves
                 # however, not including it may slow down training, but unsure if including it
                 # will mess up the training process
@@ -98,7 +130,15 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity):
                 #     reward = 0
                 reward *= -1
                 active_network["training"].currentState = final_state
-                active_network["training"].add((done, initial_state, action, final_state, reward), max_memory_capacity)
+                active_network["training"].add((done, initial_state, action, final_state, reward), max_memory_capacity,
+                                               epsilon_decay_rate)
+                if not len(active_network["training"].memory) < max_memory_capacity:
+                    active_network["training"].memory_replay(frozen_network["target"], max_memory_capacity, epsilon_decay_rate)
+
+                # print('DONE: ', done)
+                # print(final_state.board)
+                # print('DONE')
+
             # if done and reward == 0:
             #     print("tie game")
             #     print(current_state.board)
@@ -127,12 +167,15 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity):
         if not len(active_network["training"].memory) < max_memory_capacity:
             plot_x.append(episode_number)
             plot_y.append(consecutive_moves)
-            active_network["training"].memory_replay(frozen_network["target"])
+            # note that memory replay already occured
+            # active_network["training"].memory_replay(frozen_network["target"], max_memory_capacity, epsilon_decay_rate)
 
         # swap target and training network case
         # if active_network["training"].current_training_episodes > \
         #     active_network["training"].max_training_episodes:
-        if active_network["training"].current_training_episodes > max_training_episodes:
+        correct_swapping = False
+        # if active_network["training"].current_training_episodes >= max_training_episodes:
+        if (episode_number + 1) % max_training_episodes == 0:
             print("\n\n\n#########SWAPPING TARGET AND TRAINING############\n\n\n")
             # exit("swapping target and training")
 
@@ -147,7 +190,9 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity):
 
         # swap active and frozen network case
         # if agent_live_episodes > active_network["training"].max_agent_live_episodes:
-        if agent_live_episodes > max_live_episodes:
+        # if agent_live_episodes >= max_live_episodes:
+        if (episode_number + 1) % max_live_episodes == 0:
+            print("!!!!!!!!!!!!!!!!!!!SWAPPING LIVE AGENTS!!!!!!!!!!!!!!!!!!")
             # swap acitve and frozen networks and possibly update the max agent live episodes field
             active, frozen = swap_networks(active_network["training"], frozen_network["training"])
             active_network["training"] = active
@@ -155,12 +200,16 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity):
             active, frozen = swap_networks(active_network["target"], frozen_network["target"])
             active_network["target"] = active
             frozen_network["target"] = frozen
-            print(active_network["target"].epsilon)
-            print(active_network["training"].epsilon)
-            print(frozen_network["target"].epsilon)
-            print(frozen_network["training"].epsilon)
+            print('active target epsilon: ', active_network["target"].epsilon)
+            print('active training epsilon: ', active_network["training"].epsilon)
+            print('frozen target epsilon: ', frozen_network["target"].epsilon)
+            print('frozen training epsilon: ', frozen_network["training"].epsilon)
+            print(active_network['training'].player, active_network['target'].player,
+                  frozen_network['training'].player, frozen_network['target'].player)
+            # exit()
+            active_network['training'].current_training_episodes = 0
+            active_network['target'].current_training_episodes = 0
             agent_live_episodes = 0
-            print("!!!!!!!!!!!!!!!!!!!SWAPPING LIVE AGENTS!!!!!!!!!!!!!!!!!!")
 
 #todo: make sure that the fix you added to this is actually a fix
 def swap_networks(network1, network2):
@@ -169,64 +218,77 @@ def swap_networks(network1, network2):
     # pickle.dump(network1.model, out1)
     # out1.close()
 
-    # network1.model.save("temp1_weights.h5")
+    # network1.model.save("net1_weights.h5")
+    # network2.model.save('')
+    network1.model = network2.model
     print("B")
-    temp1 = DQNAgent(network1.currentState, network1.player)
-    temp1.memory = copy.copy(network1.memory)
-    temp1.currentState = copy.deepcopy(network1.currentState)
+    temp1 = DQNAgent(network2.currentState, network2.player)
+    temp1.memory = copy.deepcopy(network2.memory)
+    temp1.currentState = copy.deepcopy(network2.currentState)
+    # temp1.model = network2.model
     print("C")
     # in1 = open("temp1_weights.pickle", "rb")
-    temp1.model = network1.model
     # in1.close()
     print("D")
-    temp1.epsilon = network1.epsilon
-    temp1.current_training_episodes = network1.current_training_episodes
-    temp1.max_training_episodes = network1.max_training_episodes
-    temp1.max_agent_live_episodes = network1.max_agent_live_episodes
-    temp1.player = network1.player
+    temp1.epsilon = network2.epsilon
+    temp1.current_training_episodes = network2.current_training_episodes
+    temp1.max_training_episodes = network2.max_training_episodes
+    temp1.max_agent_live_episodes = network2.max_agent_live_episodes
+    temp1.player = network2.player
 
     # out2 = open("temp2_weights.pickle", "wb")
-    # network2.model.save("temp2_weights.h5")
+    # network2.model.save("p2_weights.h5")
     # pickle.dump(network2.model, out2)
     # out2.close()
-    temp2 = DQNAgent(network2.currentState, network2.player)
-    temp2.memory = copy.copy(network2.memory)
-    temp2.currentState = copy.deepcopy(network2.currentState)
+    temp2 = DQNAgent(network1.currentState, network1.player)
+    temp2.memory = copy.deepcopy(network1.memory)
+    temp2.currentState = copy.deepcopy(network1.currentState)
+    temp2.model = network1.model
+    temp1.model = network2.model
 
     # in2 = open("temp2_weights.pickle", "rb")
-    temp2.model = network2.model
+    # temp2.model = models.load_model('net1_weights.h5')
+    # temp1.model = models.load_model('p2_weights.h5')
     # in2.close()
-    temp2.epsilon = network2.epsilon
-    temp2.current_training_episodes = network2.current_training_episodes
-    temp2.max_training_episodes = network2.max_training_episodes
-    temp2.max_agent_live_episodes = network2.max_agent_live_episodes
-    temp2.player = network2.player
+    temp2.epsilon = network1.epsilon
+    temp2.current_training_episodes = network1.current_training_episodes
+    temp2.max_training_episodes = network1.max_training_episodes
+    temp2.max_agent_live_episodes = network1.max_agent_live_episodes
+    temp2.player = network1.player
+    # temp2.model = network1.model
 
     # network1 = temp2
     # network2 = temp1
     print(network1.epsilon)
     print(network2.epsilon)
-    return temp2, temp1
+    return temp1, temp2
 
 
 def play_checkers():
     pass
 
 def main():
-    live_ranges = np.arange(10, 17)
+    # live_ranges = np.arange(10, 17)
+    live_ranges = np.array([10, 11, 12])
     live_ranges = 2 ** live_ranges
     for live_range in live_ranges:
         maxTrainingExp = int(math.log2(live_range))
-        for trainingExp in range(6, maxTrainingExp):
+        #reminder remember to change to 6 as min bound later
+        #todo: I wonder if the way you are removing stuff from an array is inefficient
+        for trainingExp in range(8, maxTrainingExp):
             training_range = 2 ** trainingExp
-            for mem_cap_exp in range(8, 12):
-                max_memory_capacity = 2 ** mem_cap_exp
-                print('max_mem: ', max_memory_capacity)
-                train_model(live_range, training_range, max_memory_capacity)
+            for mem_cap_exp in range(9,10):
+                for epsilon_decay in range(5,10, 2):
+                    max_memory_capacity = 2 ** mem_cap_exp
 
-    print(live_ranges)
-    exit()
-    #
-    # train_model()
+                    # epsilon_decay_rate = .9 + (epsilon_decay / 100)
+                    epsilon_decay_rate = .999 + epsilon_decay / 10000
+                    print("TRAINING AGENT WITH PARAMETERS: ")
+                    print(live_range, training_range, max_memory_capacity, epsilon_decay_rate)
+                    exit()
+                    #train_model(live_range, training_range, max_memory_capacity, epsilon_decay_rate)
+                    # epsilon_decay_rate = (epsilon_decay_rate / 10) + .9
+                    train_model(live_range, training_range, max_memory_capacity, epsilon_decay_rate)
 
-main()
+if __name__ == "__main__":
+    main()

@@ -8,6 +8,7 @@ import tensorflow.keras as keras
 import makeMove
 import constants
 import random
+import collections
 
 
 # board size is (8, 8)
@@ -41,7 +42,7 @@ class DQNAgent:
         model.add(tf.layers.Dense(96, activation = 'linear'))
         opt = keras.optimizers.Adam()
         #opt = tf.train.AdamOptimizer(learning_rate=constants.LEARNING_RATE)
-        model.compile(loss='mse', optimizer=opt, metrics=['accuracy'])
+        model.compile(loss='mse', optimizer=opt)
         return model
 
 
@@ -49,7 +50,7 @@ class DQNAgent:
     preforms memory replay on the model 
     target_network: DQN representing the active agent's target Q values
     '''
-    def memory_replay(self, target_network):
+    def memory_replay(self, target_network, max_memory_capacity, epsilon_decay_rate):
         # create a minibatch of size 64
         # print(self.memory)
         sample_size = int(.1 * len(self.memory))
@@ -58,22 +59,28 @@ class DQNAgent:
         targets = []
         features = []
         # get the target Q values for all actions
+        self.update_epsilon(epsilon_decay_rate, max_memory_capacity)
         for done,initial_state, action, final_state, reward in memory_sample:
             # for the next line of code, you need to ensure that you are
+            #the next line of code may be an issue when you implement a policy to only choose legal moves
             next_state_return_est = constants.DISCOUNT_FACTOR * max(target_network.model.predict(final_state.flatten())[0]) + reward
             if done:
                 next_state_return_est = reward
             return_estimation = self.model.predict(initial_state.flatten())
             return_estimation[0][action] = next_state_return_est
             targets.append(return_estimation[0])
-            features.append(initial_state.flatten()[0])
+            # print(return_estimation[0])
+            # print(self.model.predict(initial_state.flatten()))
+
+            features.append(initial_state.flatten()[0])#may want to change this to just append the board
+            # print("PRINTING FEATURES AND TARGETS!!!!")
+            # print(features[0])
+            # print(targets[0])
         targets = np.array(targets)
         features = np.array(features)
         self.model.fit(features, targets, verbose=1, validation_split=1)
         # if self.epsilon > constants.MIN_EPSILON_VALUE:
         #     self.epsilon *= constants.EPSILON_DECAY_RATE
-        print("EPSILON: ", self.epsilon)
-        print("Memory replay completed!!!!!!!")
             # print("fitted!!!!!!!!")
 
 
@@ -81,36 +88,74 @@ class DQNAgent:
     use an epsilon greedy policy to get the next move
     returns the number of the next action
     '''
-    def get_next_action(self, max_memory_size):
+    def get_next_action(self, max_memory_size, legal_moves, distanceFromBest = 0):
+        # print('lm: ', legal_moves)
+        lm = list(legal_moves)
         if random.uniform(0,1) <= self.epsilon: # take a random move
-            nextAction = random.randint(0, 95)
+            # nextAction = random.randint(0, 95)
+            nextAction = random.choice(lm)
+            return nextAction, distanceFromBest
+            # distanceFromBest = 0
+
             # print("random move: ", nextAction)
         else:
             # print(self.currentState.flatten().shape)
             # print(self.currentState.flatten())
-            nextAction = np.argmax(self.model.predict(self.currentState.flatten()))
+
+            # return the best legal move to make
+            allActions = self.model.predict(self.currentState.flatten())[0]
+            q_values = []
+            for l in lm:
+                # print(lm_i)
+                q_values.append(allActions[l])
+            # print(q_values)
+            # print(lm)
+            # exit()
+            max_q_pos = np.argmax(np.array(q_values))
+            return lm[max_q_pos], distanceFromBest
 
 
-        # update the explore/exploit chance
-        # todo: this needs to only be updated after a episode has finished
-        if self.memory is not None:
-            print(len(self.memory))
+
+        # # update the explore/exploit chance
+        # # todo: this needs to only be updated after a episode has finished
+        # # if self.memory is not None:
+        # #     print(len(self.memory))
+        # # if self.epsilon > constants.MIN_EPSILON_VALUE and self.memory is not None and \
+        # #         len(self.memory) == max_memory_size:
+        # #     self.epsilon *= epsilon_decay_rate
+        # results = self.model.predict(self.currentState.flatten())[0]
+        # results = np.sort(results.flatten())[-1::-1]
+        # valueToFind = results[distanceFromBest]
+        #
+        # predicted_values = self.model.predict(self.currentState.flatten())[0]
+        # # print(predicted_values)
+        # # print(valueToFind)
+        # # print(np.max(predicted_values))
+        # nextAction = np.where(predicted_values == valueToFind)[0]
+        # if distanceFromBest + 1 >= 96:
+        #     exit("!!!!!!!!!!!!!!DISTANCE FROM BEST TOO LARGE!!!!!!!!!!!!!")
+        # return nextAction, distanceFromBest + 1
+
+
+
+
+    def update_epsilon(self, epsilon_decay_rate, max_memory_size):
         if self.epsilon > constants.MIN_EPSILON_VALUE and self.memory is not None and \
                 len(self.memory) == max_memory_size:
-            self.epsilon *= constants.EPSILON_DECAY_RATE
-        return nextAction
+            self.epsilon *= epsilon_decay_rate
 
     '''
     adds a new memory to the agent's memory.
     if the memory is already full, the first memory is removed
     '''
-    def add(self, new_memory, max_memory_capacity):
+    def add(self, new_memory, max_memory_capacity, epsilon_decay_rate):
         if self.memory is None:
             self.memory = np.array([new_memory])
         else:
-            self.memory = np.vstack([self.memory, new_memory])
-            if len(self.memory) > max_memory_capacity:
-                self.memory = self.memory[1:, :]
-
+            # self.memory = np.append(self.memory, [new_memory], axis=0)
+            if len(self.memory) >= max_memory_capacity:
+                self.memory[:-1] = self.memory[1:]; self.memory[-1] = new_memory
+            else:
+                self.memory = np.append(self.memory, [new_memory], axis=0)
 
 
