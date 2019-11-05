@@ -39,7 +39,7 @@ class DQNAgent:
         model.add(tf.keras.layers.Dense(input_layer_size, input_shape = (input_layer_size,), activation = 'relu'))
         model.add(tf.keras.layers.Dropout(.2))
         #model.add(tf.layers.Dense(hidden_layer_size, activation = 'relu'))
-        model.add(tf.layers.Dense(96, activation = 'linear'))
+        model.add(tf.keras.layers.Dense(96, activation = 'linear'))
         opt = keras.optimizers.Adam()
         #opt = tf.train.AdamOptimizer(learning_rate=constants.LEARNING_RATE)
         model.compile(loss='mse', optimizer=opt)

@@ -1,9 +1,8 @@
-from source import *
-from source.DQNAgent import DQNAgent
-from source import constants
-from source.makeMove import State
-from source.makeMove import get_next_state
-from source.makeMove import get_all_legal_moves
+from DQNAgent import DQNAgent
+import constants
+from makeMove import State
+from makeMove import get_next_state
+from makeMove import get_all_legal_moves
 import numpy as np
 import copy
 import tensorflow
@@ -85,19 +84,9 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
         while not done:
             consecutive_moves += 1
             current_state = active_network["training"].currentState
-            # print()
-            # print("turn: ", current_state.playerTurn)
             legal_moves = get_all_legal_moves(current_state)
-            # print('pt: ', current_state.playerTurn)
-            # print('lm: ', legal_moves)
-            # print(current_state.board)
             action, _ = active_network["training"].get_next_action(max_memory_capacity, legal_moves, 0)
-            # print(current_state.playerTurn)
             done, initial_state, action, intermediate_state, reward = get_next_state(current_state, active_network['training'], max_memory_capacity, 0, action, legal_moves)
-            # print(intermediate_state.playerTurn)
-            # exit()
-            # print('in_s: \n\n',initial_state.board)
-            # print('im_s: \n\n', intermediate_state.board)
             #need to immitate that opp saw something and couldn't make a move-- just have to swap the player's turn it is
             if done:
                 intermediate_state.playerTurn *= -1
@@ -106,28 +95,15 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
                 if not len(active_network["training"].memory) < max_memory_capacity:
                     active_network["training"].memory_replay(frozen_network["target"], max_memory_capacity, epsilon_decay_rate)
                 break
-                # if reward != -2:
-                #     print('REWARD: ', reward)
-                #     # important note: it looks like your final board state is intermediate state, not final state
-                #     print('final board: \n', active_network['training'].currentState.board, "\n\n ", intermediate_state.board)
-                #     exit("SUCCESS!!!!!!")
-                # break
             else:
                 legal_moves = get_all_legal_moves(intermediate_state)
                 consecutive_moves+=1
-                # print(current_state.board)
-                # opp_action = np.argmax(frozen_network["target"].model.predict(intermediate_state.flatten()))#note that you will need to change s.t. a valid move is chosen
                 opp_action, _ = frozen_network["target"].get_next_action(max_memory_capacity, legal_moves, 0)
                 done, _, opp_action, final_state, reward = get_next_state(intermediate_state, frozen_network['target'], max_memory_capacity, 0, opp_action, legal_moves)
-                # print('fs_s: \n\n', final_state.board)
-                # print(final_state.board)
                 # this not needed because eventually, the opponent will learn to only make valid moves
                 # however, not including it may slow down training, but unsure if including it
                 # will mess up the training process
 
-                # may need to stop cheating, seems to be causing a plateau
-                # if reward == -2:
-                #     reward = 0
                 reward *= -1
                 active_network["training"].currentState = final_state
                 active_network["training"].add((done, initial_state, action, final_state, reward), max_memory_capacity,
@@ -135,22 +111,10 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
                 if not len(active_network["training"].memory) < max_memory_capacity:
                     active_network["training"].memory_replay(frozen_network["target"], max_memory_capacity, epsilon_decay_rate)
 
-                # print('DONE: ', done)
-                # print(final_state.board)
-                # print('DONE')
-
-            # if done and reward == 0:
-            #     print("tie game")
-            #     print(current_state.board)
-            #     exit()
-            # if not done:
-            #     print("turn: ", current_state.playerTurn)
-            #     print("struct current turn: ", active_network["training"].currentState.playerTurn)
 
             # note that you will probably have to update parameters here regarding whose turn it is here/
             # make sure you are exact about that -- could significantly mess up the training
         done = False
-        # print("END OF EPISODE!!!!!")
         active_network["training"].current_training_episodes += 1
         agent_live_episodes += 1
         print()
@@ -181,12 +145,9 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
 
             # swap target and training networks and possibly update some of the agent's fields(tbd)
             active_network["training"].current_training_episodes = 0
-            # print("target epsilon: ", active_network["target"].epsilon)
             active, frozen = swap_networks(active_network["training"], active_network["target"])
             active_network["training"] = active
             active_network["target"] = frozen
-            # print("training epsilon: ", active_network["training"].epsilon)
-            # print("target epsilon: ", active_network["target"].epsilon)
 
         # swap active and frozen network case
         # if agent_live_episodes > active_network["training"].max_agent_live_episodes:
@@ -206,7 +167,6 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
             print('frozen training epsilon: ', frozen_network["training"].epsilon)
             print(active_network['training'].player, active_network['target'].player,
                   frozen_network['training'].player, frozen_network['target'].player)
-            # exit()
             active_network['training'].current_training_episodes = 0
             active_network['target'].current_training_episodes = 0
             agent_live_episodes = 0
@@ -285,10 +245,10 @@ def main():
                     epsilon_decay_rate = .999 + epsilon_decay / 10000
                     print("TRAINING AGENT WITH PARAMETERS: ")
                     print(live_range, training_range, max_memory_capacity, epsilon_decay_rate)
-                    exit()
                     #train_model(live_range, training_range, max_memory_capacity, epsilon_decay_rate)
                     # epsilon_decay_rate = (epsilon_decay_rate / 10) + .9
                     train_model(live_range, training_range, max_memory_capacity, epsilon_decay_rate)
+                    exit()
 
 if __name__ == "__main__":
     main()

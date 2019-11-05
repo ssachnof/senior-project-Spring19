@@ -9,7 +9,7 @@ space, this will be difficult to implement
 
 import math
 import numpy as np
-from source import constants
+import constants
 
 
 '''
@@ -218,7 +218,6 @@ def get_next_state(initial_state, DQNAgent, maxMemorySize, distanceFromBest, act
         # exit()
         print('ILLEGAL MOVE MADE BY AGENT!!!!!!!!')
         print(piece_initial_location, piece_final_location)
-        exit()
         return True, initial_state, action, initial_state, -2
     done, final_state, reward = make_move(initial_state, piece_initial_location, piece_final_location)
     # print('{{{{{{{{{{{{{{{')
