@@ -78,7 +78,7 @@ class DQNAgent:
             # print(targets[0])
         targets = np.array(targets)
         features = np.array(features)
-        self.model.fit(features, targets, verbose=1, validation_split=1)
+        self.model.fit(features, targets, verbose=0, validation_split=1)
         # if self.epsilon > constants.MIN_EPSILON_VALUE:
         #     self.epsilon *= constants.EPSILON_DECAY_RATE
             # print("fitted!!!!!!!!")

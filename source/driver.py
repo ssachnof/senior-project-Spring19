@@ -1,3 +1,4 @@
+from __future__ import absolute_import, division, print_function, unicode_literals
 from DQNAgent import DQNAgent
 import constants
 from makeMove import State
@@ -5,12 +6,13 @@ from makeMove import get_next_state
 from makeMove import get_all_legal_moves
 import numpy as np
 import copy
-import tensorflow
+import tensorflow as tf
 from tensorflow.keras import models
 import matplotlib.pyplot as plt
 import math
 import pickle
-
+from tensorflow.python.client import device_lib 
+import time
 '''
 contains the logic for training the agent(ie. the training loop) and allowing a human to interact with the game
 '''
@@ -81,7 +83,12 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
         done = False
         current_state = active_network["training"].currentState
         consecutive_moves = 0
+        start = time.time()
+        max_time = start + (5*60)
         while not done:
+            current_time = time.time()
+            if current_time > max_time:
+               break
             consecutive_moves += 1
             current_state = active_network["training"].currentState
             legal_moves = get_all_legal_moves(current_state)
@@ -228,6 +235,9 @@ def play_checkers():
     pass
 
 def main():
+    config = tf.ConfigProto()
+    config.gpu_options.allow_growth = True
+    sess = tf.Session(config=config)
     # live_ranges = np.arange(10, 17)
     live_ranges = np.array([10, 11, 12])
     live_ranges = 2 ** live_ranges
