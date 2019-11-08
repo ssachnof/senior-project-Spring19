@@ -84,7 +84,7 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
         current_state = active_network["training"].currentState
         consecutive_moves = 0
         start = time.time()
-        max_time = start + (5*60)
+        max_time = start + (8*60)
         while not done:
             current_time = time.time()
             if current_time > max_time:
@@ -180,7 +180,6 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
 
 #todo: make sure that the fix you added to this is actually a fix
 def swap_networks(network1, network2):
-    print("A")
     # out1 = open("temp1_weights.pickle", "wb")
     # pickle.dump(network1.model, out1)
     # out1.close()
@@ -188,15 +187,12 @@ def swap_networks(network1, network2):
     # network1.model.save("net1_weights.h5")
     # network2.model.save('')
     network1.model = network2.model
-    print("B")
     temp1 = DQNAgent(network2.currentState, network2.player)
     temp1.memory = copy.deepcopy(network2.memory)
     temp1.currentState = copy.deepcopy(network2.currentState)
     # temp1.model = network2.model
-    print("C")
     # in1 = open("temp1_weights.pickle", "rb")
     # in1.close()
-    print("D")
     temp1.epsilon = network2.epsilon
     temp1.current_training_episodes = network2.current_training_episodes
     temp1.max_training_episodes = network2.max_training_episodes

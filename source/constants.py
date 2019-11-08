@@ -15,7 +15,7 @@ LEARNING_RATE = .001
 
 # EPSILON_DECAY_RATE = .9999
 EPSILON_DECAY_RATE = .9995
-MIN_EPSILON_VALUE = .01
+MIN_EPSILON_VALUE = .05
 
 
 # maximum number of training episodes before swapping the agent's training and target networks
