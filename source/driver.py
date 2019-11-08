@@ -59,7 +59,7 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
     plt.title("live episodes: " + str(max_live_episodes) + " training episodes: " +
               str(max_training_episodes) + "\n mem cap: " + str(max_memory_capacity) + ' epsilon decay rate: ' + str(epsilon_decay_rate))
     for episode_number in range(constants.MAX_EPISODES):
-        if episode_number > 7500:
+        if episode_number > 1024:
             # if active_network['training'].epsilon <= min_epsilon and active_network['target'].epsilon <= min_epsilon and\
             #     frozen_network['training'].epsilon <= min_epsilon and frozen_network['target'].epsilon <= min_epsilon and\
             #         episode_number > 10000:
@@ -85,10 +85,11 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
         consecutive_moves = 0
         start = time.time()
         max_time = start + (8*60)
-        while not done:
-            current_time = time.time()
-            if current_time > max_time:
-               break
+        MAX_PLAYER_MOVES = 1024
+        for move_num in range(MAX_PLAYER_MOVES):
+            # current_time = time.time()
+            # if current_time > max_time:
+            #    break
             consecutive_moves += 1
             current_state = active_network["training"].currentState
             legal_moves = get_all_legal_moves(current_state)
@@ -101,7 +102,6 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
                                                epsilon_decay_rate)
                 if not len(active_network["training"].memory) < max_memory_capacity:
                     active_network["training"].memory_replay(frozen_network["target"], max_memory_capacity, epsilon_decay_rate)
-                break
             else:
                 legal_moves = get_all_legal_moves(intermediate_state)
                 consecutive_moves+=1
@@ -117,66 +117,37 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
                                                epsilon_decay_rate)
                 if not len(active_network["training"].memory) < max_memory_capacity:
                     active_network["training"].memory_replay(frozen_network["target"], max_memory_capacity, epsilon_decay_rate)
+            if done or time.time() > max_time:
+                start = time.time()
+                max_time = start + (8*60)
+                active_network["training"].currentState = get_initial_state(active_network["training"].player)
+            if (move_num + 1) % max_training_episodes == 0:
+                active_network["training"].current_training_episodes = 0
+                active, frozen = swap_networks(active_network["training"], active_network["target"])
+                active_network["training"] = active
+                active_network["target"] = frozen
 
+        print("!!!!!!!!!!!!!!!!!!!SWAPPING LIVE AGENTS!!!!!!!!!!!!!!!!!!")
+        # swap acitve and frozen networks and possibly update the max agent live episodes field
+        active, frozen = swap_networks(active_network["training"], frozen_network["training"])
+        active_network["training"] = active
+        frozen_network["training"] = frozen
+        active, frozen = swap_networks(active_network["target"], frozen_network["target"])
+        active_network["target"] = active
+        frozen_network["target"] = frozen
+        print('active target epsilon: ', active_network["target"].epsilon)
+        print('active training epsilon: ', active_network["training"].epsilon)
+        print('frozen target epsilon: ', frozen_network["target"].epsilon)
+        print('frozen training epsilon: ', frozen_network["training"].epsilon)
+        print(active_network['training'].player, active_network['target'].player,
+              frozen_network['training'].player, frozen_network['target'].player)
+        active_network['training'].current_training_episodes = 0
+        active_network['target'].current_training_episodes = 0
+        agent_live_episodes = 0
 
             # note that you will probably have to update parameters here regarding whose turn it is here/
             # make sure you are exact about that -- could significantly mess up the training
-        done = False
-        active_network["training"].current_training_episodes += 1
-        agent_live_episodes += 1
-        print()
-        print("CONSECUTIVE MOVES: ", consecutive_moves)
 
-
-        # reset the current state
-        # note: you probably shouldn't need to reset the target network's current state
-        # that will depend on the 1 episode training logic
-        active_network["training"].currentState = get_initial_state(active_network["training"].player)
-
-        # fit the model using memory replay-- you might want to just do nothing until you have at least 64 samples
-        # could just use an if statement here(would open the potential for over-fitting)
-        if not len(active_network["training"].memory) < max_memory_capacity:
-            plot_x.append(episode_number)
-            plot_y.append(consecutive_moves)
-            # note that memory replay already occured
-            # active_network["training"].memory_replay(frozen_network["target"], max_memory_capacity, epsilon_decay_rate)
-
-        # swap target and training network case
-        # if active_network["training"].current_training_episodes > \
-        #     active_network["training"].max_training_episodes:
-        correct_swapping = False
-        # if active_network["training"].current_training_episodes >= max_training_episodes:
-        if (episode_number + 1) % max_training_episodes == 0:
-            print("\n\n\n#########SWAPPING TARGET AND TRAINING############\n\n\n")
-            # exit("swapping target and training")
-
-            # swap target and training networks and possibly update some of the agent's fields(tbd)
-            active_network["training"].current_training_episodes = 0
-            active, frozen = swap_networks(active_network["training"], active_network["target"])
-            active_network["training"] = active
-            active_network["target"] = frozen
-
-        # swap active and frozen network case
-        # if agent_live_episodes > active_network["training"].max_agent_live_episodes:
-        # if agent_live_episodes >= max_live_episodes:
-        if (episode_number + 1) % max_live_episodes == 0:
-            print("!!!!!!!!!!!!!!!!!!!SWAPPING LIVE AGENTS!!!!!!!!!!!!!!!!!!")
-            # swap acitve and frozen networks and possibly update the max agent live episodes field
-            active, frozen = swap_networks(active_network["training"], frozen_network["training"])
-            active_network["training"] = active
-            frozen_network["training"] = frozen
-            active, frozen = swap_networks(active_network["target"], frozen_network["target"])
-            active_network["target"] = active
-            frozen_network["target"] = frozen
-            print('active target epsilon: ', active_network["target"].epsilon)
-            print('active training epsilon: ', active_network["training"].epsilon)
-            print('frozen target epsilon: ', frozen_network["target"].epsilon)
-            print('frozen training epsilon: ', frozen_network["training"].epsilon)
-            print(active_network['training'].player, active_network['target'].player,
-                  frozen_network['training'].player, frozen_network['target'].player)
-            active_network['training'].current_training_episodes = 0
-            active_network['target'].current_training_episodes = 0
-            agent_live_episodes = 0
 
 #todo: make sure that the fix you added to this is actually a fix
 def swap_networks(network1, network2):
