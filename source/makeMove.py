@@ -140,7 +140,6 @@ def checkBoard(initial_board, piece_num):
 
 
 def get_next_state(initial_state, DQNAgent, maxMemorySize, distanceFromBest, action, legal_moves):
-    legal_moves = get_all_legal_moves(initial_state)
     initial_board = initial_state.board
     # print('is: ', initial_state.board)
     # print('currentTurn: ', initial_state.playerTurn)
