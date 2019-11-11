@@ -9,7 +9,7 @@ space, this will be difficult to implement
 
 import math
 import numpy as np
-from source import constants
+import constants
 
 
 '''
@@ -159,6 +159,13 @@ def get_next_state(initial_state, DQNAgent, maxMemorySize, distanceFromBest, act
             elif initial_board[row, col] // 100 == piece_num and not checkBoard(initial_board, piece_num):
                 piece_initial_location = (row, col)
                 isKing = True
+    if piece_initial_location is None:
+       print(initial_state.board)
+       print(initial_state.playerTurn)
+       print(piece_num)
+       print(action)
+       return True, initial_state, action, initial_state, -2
+       #exit(1)
     # print('ipl1: ', piece_initial_location, 'pn: ', piece_num, 'action: ', action, 'isKing: ', isKing)
     # note that because the move mapping of actually occurs inside this, it might be better to just pass in the
     # state, idk
@@ -215,8 +222,8 @@ def get_next_state(initial_state, DQNAgent, maxMemorySize, distanceFromBest, act
     if not is_valid_move(initial_state, piece_initial_location, piece_final_location, isKing):
         # print('this should not run!!!!')
         # exit()
-        print('ILLEGAL MOVE MADE BY AGENT!!!!!!!!')
-        print(piece_initial_location, piece_final_location)
+        #print('ILLEGAL MOVE MADE BY AGENT!!!!!!!!')
+        #print(piece_initial_location, piece_final_location)
         return True, initial_state, action, initial_state, -2
     done, final_state, reward = make_move(initial_state, piece_initial_location, piece_final_location)
     # print('{{{{{{{{{{{{{{{')

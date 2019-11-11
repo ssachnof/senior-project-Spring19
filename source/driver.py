@@ -1,9 +1,9 @@
-from source import *
-from source.DQNAgent import DQNAgent
-from source import constants
-from source.makeMove import State
-from source.makeMove import get_next_state
-from source.makeMove import get_all_legal_moves
+from DQNAgent import DQNAgent
+import time
+import constants
+from makeMove import State
+from makeMove import get_next_state
+from makeMove import get_all_legal_moves
 import numpy as np
 import copy
 import tensorflow
@@ -57,7 +57,7 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
     plt.title("live episodes: " + str(max_live_episodes) + " training episodes: " +
               str(max_training_episodes) + "\n mem cap: " + str(max_memory_capacity) + ' epsilon decay rate: ' + str(epsilon_decay_rate))
     for episode_number in range(constants.MAX_EPISODES):
-        if episode_number > 7500:
+        if episode_number > 15000:
             # if active_network['training'].epsilon <= min_epsilon and active_network['target'].epsilon <= min_epsilon and\
             #     frozen_network['training'].epsilon <= min_epsilon and frozen_network['target'].epsilon <= min_epsilon and\
             #         episode_number > 10000:
@@ -81,16 +81,19 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
         done = False
         current_state = active_network["training"].currentState
         consecutive_moves = 0
+        start = time.time()
+        max_time = start + (8*60)
         while not done:
+            current_time = time.time()
             consecutive_moves += 1
             current_state = active_network["training"].currentState
             # print()
             # print("turn: ", current_state.playerTurn)
-            # legal_moves = get_all_legal_moves(current_state)
+            legal_moves = get_all_legal_moves(current_state)
             # print('pt: ', current_state.playerTurn)
             # print('lm: ', legal_moves)
             # print(current_state.board)
-            action, _ = active_network["training"].get_next_action(max_memory_capacity, None, 0)
+            action, _ = active_network["training"].get_next_action(max_memory_capacity, legal_moves, 0)
             # print(current_state.playerTurn)
             done, initial_state, action, intermediate_state, reward = get_next_state(current_state, active_network['training'], max_memory_capacity, 0, action, None)
             # print(intermediate_state.playerTurn)
@@ -98,7 +101,7 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
             # print('in_s: \n\n',initial_state.board)
             # print('im_s: \n\n', intermediate_state.board)
             #need to immitate that opp saw something and couldn't make a move-- just have to swap the player's turn it is
-            if done:
+            if done or current_time > max_time:
                 intermediate_state.playerTurn *= -1
                 active_network["training"].add((done, initial_state, action, intermediate_state, reward), max_memory_capacity,
                                                epsilon_decay_rate)
@@ -117,7 +120,7 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
                 # print(current_state.board)
                 # opp_action = np.argmax(frozen_network["target"].model.predict(intermediate_state.flatten()))#note that you will need to change s.t. a valid move is chosen
                 opp_action, _ = frozen_network["target"].get_next_action(max_memory_capacity, legal_moves, 0)
-                done, _, opp_action, final_state, reward = get_next_state(intermediate_state, frozen_network['target'], max_memory_capacity, 0, opp_action, legal_moves)
+                done, _, opp_action, final_state, reward = get_next_state(intermediate_state, frozen_network['target'], max_memory_capacity, 0, opp_action, None)
                 # print('fs_s: \n\n', final_state.board)
                 # print(final_state.board)
                 # this not needed because eventually, the opponent will learn to only make valid moves
@@ -125,8 +128,8 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
                 # will mess up the training process
 
                 # may need to stop cheating, seems to be causing a plateau
-                # if reward == -2:
-                #     reward = 0
+                if reward == -2:
+                   reward = 0
                 reward *= -1
                 active_network["training"].currentState = final_state
                 active_network["training"].add((done, initial_state, action, final_state, reward), max_memory_capacity,

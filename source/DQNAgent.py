@@ -39,7 +39,7 @@ class DQNAgent:
         model.add(tf.keras.layers.Dense(input_layer_size, input_shape = (input_layer_size,), activation = 'relu'))
         model.add(tf.keras.layers.Dropout(.2))
         #model.add(tf.layers.Dense(hidden_layer_size, activation = 'relu'))
-        model.add(tf.layers.Dense(96, activation = 'linear'))
+        model.add(tf.keras.layers.Dense(96, activation = 'linear'))
         opt = keras.optimizers.Adam()
         #opt = tf.train.AdamOptimizer(learning_rate=constants.LEARNING_RATE)
         model.compile(loss='mse', optimizer=opt)
@@ -78,7 +78,7 @@ class DQNAgent:
             # print(targets[0])
         targets = np.array(targets)
         features = np.array(features)
-        self.model.fit(features, targets, verbose=1, validation_split=1)
+        self.model.fit(features, targets, verbose=0, validation_split=1)
         # if self.epsilon > constants.MIN_EPSILON_VALUE:
         #     self.epsilon *= constants.EPSILON_DECAY_RATE
             # print("fitted!!!!!!!!")
@@ -90,10 +90,10 @@ class DQNAgent:
     '''
     def get_next_action(self, max_memory_size, legal_moves, distanceFromBest = 0):
         # print('lm: ', legal_moves)
-        # lm = list(legal_moves)
+        lm = list(legal_moves)
         if random.uniform(0,1) <= self.epsilon: # take a random move
-            nextAction = random.randint(0, 95)
-            # nextAction = random.choice(lm)
+            #nextAction = random.randint(0, 95)
+            nextAction = random.choice(lm)
             return nextAction, distanceFromBest
             # distanceFromBest = 0
 
@@ -104,17 +104,14 @@ class DQNAgent:
 
             # return the best legal move to make
             allActions = self.model.predict(self.currentState.flatten())[0]
-            # q_values = []
-            # for l in lm:
-            #     # print(lm_i)
-            #     q_values.append(allActions[l])
+            q_values = []
+            for l in lm:
+                q_values.append(allActions[l])
             # # print(q_values)
             # # print(lm)
             # # exit()
-            # max_q_pos = np.argmax(np.array(q_values))
-            print(np.argmax(allActions))
-            exit()
-            return np.argmax(allActions), distanceFromBest
+            max_q_pos = np.argmax(np.array(q_values))
+            return lm[max_q_pos], distanceFromBest
 
 
 
