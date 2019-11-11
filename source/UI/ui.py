@@ -165,7 +165,7 @@ def main():
     clock.tick(60)
     game_board = pygame.image.load('Images/icon.jpg')
     pygame.display.set_icon(game_board)
-    game = Game(constants.PLAYER1, '../p2_weights.h5')
+    game = Game(constants.PLAYER1, '../old_p2_weights.h5')
     loc_start, loc_end = None, None
 
 
