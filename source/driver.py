@@ -86,13 +86,13 @@ def train_model(max_live_episodes, max_training_episodes, max_memory_capacity, e
             current_state = active_network["training"].currentState
             # print()
             # print("turn: ", current_state.playerTurn)
-            legal_moves = get_all_legal_moves(current_state)
+            # legal_moves = get_all_legal_moves(current_state)
             # print('pt: ', current_state.playerTurn)
             # print('lm: ', legal_moves)
             # print(current_state.board)
-            action, _ = active_network["training"].get_next_action(max_memory_capacity, legal_moves, 0)
+            action, _ = active_network["training"].get_next_action(max_memory_capacity, None, 0)
             # print(current_state.playerTurn)
-            done, initial_state, action, intermediate_state, reward = get_next_state(current_state, active_network['training'], max_memory_capacity, 0, action, legal_moves)
+            done, initial_state, action, intermediate_state, reward = get_next_state(current_state, active_network['training'], max_memory_capacity, 0, action, None)
             # print(intermediate_state.playerTurn)
             # exit()
             # print('in_s: \n\n',initial_state.board)
@@ -284,10 +284,9 @@ def main():
                     epsilon_decay_rate = .999 + epsilon_decay / 10000
                     print("TRAINING AGENT WITH PARAMETERS: ")
                     print(live_range, training_range, max_memory_capacity, epsilon_decay_rate)
-                    exit()
                     #train_model(live_range, training_range, max_memory_capacity, epsilon_decay_rate)
                     # epsilon_decay_rate = (epsilon_decay_rate / 10) + .9
                     train_model(live_range, training_range, max_memory_capacity, epsilon_decay_rate)
-
+                    exit()
 if __name__ == "__main__":
     main()
